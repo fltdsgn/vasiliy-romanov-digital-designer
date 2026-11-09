@@ -206,6 +206,10 @@
 .footer__actions a:first-child:is(:hover,:focus-visible)::before{transform:scale(0)}
 .footer__actions a:first-child:is(:hover,:focus-visible) .footer__button-label{color:#fff}
 .footer__actions a:is(:hover,:focus-visible){border-color:#fff}
+.footer__actions a:last-child::before{content:"";position:absolute;z-index:1;inset:0;border-radius:inherit;background:#fff;transform:scale(0);transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.footer__actions a:last-child .footer__button-label{color:#fff;transition:color .4s cubic-bezier(.22,1,.36,1)}
+.footer__actions a:last-child:is(:hover,:focus-visible)::before{transform:scale(1.05)}
+.footer__actions a:last-child:is(:hover,:focus-visible) .footer__button-label{color:#0009f2}
 .footer__actions a:focus-visible{outline:2px solid #fff;outline-offset:5px}
 .footer__arcade{position:absolute;top:32%;right:auto;left:clamp(-150px,-7vw,-96px);width:clamp(210px,13vw,250px);height:auto;transform:translateY(-50%) rotate(42deg);transform-origin:50% 55%;object-fit:contain;mix-blend-mode:normal}
 .footer__game-cta{top:48%;right:auto;left:clamp(24px,1.875vw,36px);width:177px;height:76px;padding:0;border:0;background:transparent;transform:none;cursor:pointer;box-shadow:none}
