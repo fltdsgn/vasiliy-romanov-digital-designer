@@ -408,19 +408,19 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
 .topbar__contact,.topbar__cv{gap:12px;font-family:'TT Interfaces',Arial,sans-serif;font-size:16px;font-weight:600;line-height:1.25}
 .topbar__name{top:50%;left:50%;transform:translate(-50%,-50%);font-family:'TT Interfaces',Arial,sans-serif;font-size:18px;font-weight:600;line-height:.95;white-space:nowrap}
 .topbar__link-label{line-height:20px}
-.telegram-icon{width:34px;height:34px;border-radius:0;background:transparent;color:var(--ink)}
-.telegram-icon::before{content:"";position:absolute;inset:3px;border-radius:8px;background:#dcdad6}
+.telegram-icon{width:40px;height:40px;border-radius:10px;background:#dcdad6;color:var(--ink)}
+.telegram-icon::before{display:none}
 .telegram-icon>svg{position:relative;z-index:1;width:34px;height:34px}
 .telegram-icon .telegram-animation{z-index:2}
 .telegram-icon>svg path{fill:var(--ink)}
 .telegram-animation svg path{stroke:var(--ink)!important}
-.download-icon{position:relative;width:40px;height:40px;border-radius:0;background:transparent;color:var(--ink)}
-.download-icon::before{content:"";position:absolute;left:3px;top:3px;width:34px;height:34px;border-radius:8px;background:#dcdad6}
+.download-icon{position:relative;width:40px;height:40px;border-radius:10px;background:#dcdad6;color:var(--ink)}
+.download-icon::before{display:none}
 .download-icon svg{position:relative;z-index:1;width:16px;height:16px}
 .download-animation{inset:12px;z-index:1}
 .download-animation svg path{stroke:var(--ink)!important}
-@media(max-width:900px){.topbar{height:64px;padding:10px 16px}.topbar__name{font-size:15px}.topbar__contact,.topbar__cv{font-size:11px;gap:6px}.telegram-icon{width:30px;height:30px}.telegram-icon svg{width:30px;height:30px}.download-icon{width:32px;height:32px}.download-icon::before{left:1px;top:1px;width:30px;height:30px}.download-icon svg{width:14px;height:14px}.download-animation{inset:9px}}
-@media(max-width:600px){.topbar{padding-inline:12px}.topbar__name{font-size:14px}.topbar__contact,.topbar__cv{font-size:10px;gap:5px}.telegram-icon{width:28px;height:28px}.telegram-icon svg{width:28px;height:28px}.download-icon{width:30px;height:30px}.download-icon::before{width:28px;height:28px}.download-icon svg{width:13px;height:13px}.download-animation{inset:8px}}
+@media(max-width:900px){.topbar{height:64px;padding:10px 16px}.topbar__name{font-size:15px}.topbar__contact,.topbar__cv{font-size:11px;gap:6px}.telegram-icon{width:32px;height:32px;border-radius:8px}.telegram-icon svg{width:30px;height:30px}.download-icon{width:32px;height:32px;border-radius:8px}.download-icon svg{width:14px;height:14px}.download-animation{inset:9px}}
+@media(max-width:600px){.topbar{padding-inline:12px}.topbar__name{font-size:14px}.topbar__contact,.topbar__cv{font-size:10px;gap:5px}.telegram-icon{width:28px;height:28px}.telegram-icon svg{width:28px;height:28px}.download-icon{width:30px;height:30px}.download-icon svg{width:13px;height:13px}.download-animation{inset:8px}}
 .portfolio__heading h2 span{color:var(--ink)}
 :root{font-family:'TT Interfaces',Arial,sans-serif}
 .hero h1,.portfolio__heading h2,.approach h2,.archive__heading h2,.experience__heading h2,.footer__contact h2,.job h3{font-family:'TT Interfaces',Arial,sans-serif;font-weight:500}
@@ -546,7 +546,6 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
   .telegram-icon{width:28px;height:28px}
   .telegram-icon svg{width:28px;height:28px}
   .download-icon{width:30px;height:30px}
-  .download-icon::before{left:1px;top:1px;width:28px;height:28px}
   .download-icon svg{width:13px;height:13px}
   .download-animation{inset:8px}
   .footer{gap:28px;padding:42px 24px 20px;border-radius:0 0 24px 24px}
