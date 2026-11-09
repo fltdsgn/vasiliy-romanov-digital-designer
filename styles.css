@@ -80,8 +80,8 @@
 .experience__skills span{display:flex;min-height:48px;align-items:center;justify-content:center;margin-right:-1px;padding:12px 16px;border-radius:16px;background:#d4d4d4;font-size:16px;line-height:1.27;letter-spacing:-.02em;white-space:nowrap}
 .resume-button{--resume-blue:#0009f2;position:relative;isolation:isolate;overflow:hidden;display:flex;width:100%;min-height:251px;align-items:center;justify-content:center;margin:0;padding:103px 24px;border:.5px solid var(--resume-blue);border-radius:120px;background:transparent;color:var(--resume-blue);font-size:44px;font-weight:600;line-height:1;text-align:center;text-transform:uppercase;letter-spacing:.01em;transition:color .4s cubic-bezier(.22,1,.36,1)}
 .resume-button::before{content:"";position:absolute;z-index:-1;inset:0;border-radius:inherit;background:var(--resume-blue);transform:scale(0);transition:transform .4s cubic-bezier(.22,1,.36,1)}
-.resume-button__content{position:absolute;z-index:1;top:50%;left:50%;display:flex;max-width:calc(100% - 48px);align-items:center;justify-content:center;gap:16px;white-space:nowrap;transform:translate(-50%,-50%)}
-.resume-button img{flex:none;width:40px;height:40px;max-width:none;transition:filter .4s cubic-bezier(.22,1,.36,1)}
+.resume-button__content{position:relative;z-index:1;display:flex;max-width:100%;align-items:center;justify-content:center;gap:16px;white-space:nowrap}
+.resume-button img{display:block;flex:none;width:40px;height:40px;max-width:none;transform:translateY(-.12em);transition:filter .4s cubic-bezier(.22,1,.36,1),transform .4s cubic-bezier(.22,1,.36,1)}
 .resume-button:is(:hover,:focus-visible){color:#fff}
 .resume-button:is(:hover,:focus-visible)::before{transform:scale(1.05)}
 .resume-button:is(:hover,:focus-visible) img{filter:brightness(0) invert(1);transition:filter .4s cubic-bezier(.22,1,.36,1)}
@@ -111,6 +111,7 @@
   .experience__period span{min-height:42px}
   .experience__skills span{min-height:42px}
   .resume-button{min-height:160px;padding:48px 20px;border-radius:80px;font-size:clamp(20px,4vw,32px)}
+  .resume-button img{width:32px;height:32px}
 }
 @media(max-width:600px){
   .experience.section-pad{gap:28px;padding-top:56px;padding-bottom:56px}
@@ -125,7 +126,7 @@
   .experience__skills span{font-size:12px;padding:9px 10px;min-height:36px}
   .resume-button{min-height:80px;font-size:18px;gap:8px;padding:36px 16px;border-radius:64px}
   .resume-button__content{gap:8px}
-  .resume-button img{transform:scale(.6);transform-origin:center}
+  .resume-button img{width:24px;height:24px}
 }
 .topbar{position:sticky;top:0;z-index:20;background:rgba(238,236,233,.78);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-bottom:0;transition:transform .28s ease,background-color .2s ease}.topbar.is-hidden{transform:translateY(-110%)}.topbar:focus-within{transform:translateY(0)}
 .topbar__link-label{display:flex;flex-direction:column;align-items:flex-start;line-height:1.25}
@@ -190,19 +191,21 @@
 
 /* Reveal the footer beneath the concept collage as the page scrolls. */
 .concept-lab{position:relative;z-index:auto}
-.footer{position:sticky;bottom:0;z-index:0;display:flex;height:auto;min-height:clamp(700px,55vw,1056px);flex-direction:column;gap:clamp(21px,1.667vw,32px);overflow:hidden;padding:clamp(56px,5.2083vw,100px) var(--gutter) clamp(16px,1.25vw,24px);border-radius:0 0 40px 40px;background:#0002ed;color:#fff}
+.footer{position:sticky;bottom:0;z-index:0;display:flex;height:auto;min-height:clamp(700px,55vw,1056px);flex-direction:column;gap:clamp(21px,1.667vw,32px);overflow:hidden;padding:clamp(56px,5.2083vw,100px) var(--gutter) clamp(16px,1.25vw,24px);border-radius:0;background:#0002ed;color:#fff}
 .footer__top{position:relative;display:flex;flex:0 0 clamp(372px,29.0625vw,558px);justify-content:flex-end;width:calc(100% + var(--gutter));margin-right:calc(-1 * var(--gutter));padding-bottom:clamp(21px,1.667vw,32px)}
 .footer__contact{z-index:1;display:flex;width:min(740px,100%);max-width:740px;flex-direction:column;justify-content:center;gap:clamp(21px,1.667vw,32px)}
 @media(min-width:901px){.footer__top,.footer__signature,.footer__legal{width:100%;max-width:1796px;margin-inline:auto}.footer__top{margin-right:auto}.footer__contact{position:absolute;top:0;right:0;bottom:0;width:min(620px,100%);max-width:740px}}
 .footer__contact h2{margin:0;font-size:clamp(42px,3.9583vw,76px);font-weight:700;line-height:1.02;letter-spacing:-.01em}
 .footer__contact>p{max-width:none;margin:0;color:#fff;font-size:clamp(16px,1.4583vw,28px);line-height:1.36;letter-spacing:-.01em}
 .footer__actions{display:flex;flex-wrap:wrap;gap:12px;margin:0}
-.footer__actions a{--button-ink:#fff;--button-surface:#161a20;position:relative;isolation:isolate;overflow:hidden;display:flex;min-height:76px;align-items:center;justify-content:center;padding:24px 32px;border:2px solid rgba(255,255,255,.4);border-radius:88px;background:transparent;color:#fff;font-size:16px;font-weight:700;text-align:center;text-transform:uppercase;white-space:nowrap;transition:border-color .4s cubic-bezier(.22,1,.36,1)}
-.footer__actions a::before{content:"";position:absolute;z-index:1;inset:0;border-radius:inherit;background:var(--button-ink);transform:scale(0);transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.footer__actions a{position:relative;isolation:isolate;overflow:hidden;display:flex;min-height:76px;align-items:center;justify-content:center;padding:24px 32px;border:2px solid rgba(255,255,255,.4);border-radius:88px;background:transparent;color:#fff;font-size:16px;font-weight:700;text-align:center;text-transform:uppercase;white-space:nowrap;transition:border-color .3s ease}
+.footer__actions a:first-child::before{content:"";position:absolute;z-index:1;inset:0;border-radius:inherit;background:#fff;transform:scale(1);transition:transform .4s cubic-bezier(.22,1,.36,1)}
 .footer__button-label{position:relative;z-index:2;display:inline-block;transition:color .4s cubic-bezier(.22,1,.36,1)}
-.footer__actions a:first-child{border-color:#fff;background:#fff;color:#161a20}
-.footer__actions a:is(:hover,:focus-visible)::before{transform:scale(1.05)}
-.footer__actions a:is(:hover,:focus-visible) .footer__button-label{color:var(--button-surface)}
+.footer__actions a:first-child{border-color:#fff;background:transparent;color:#161a20}
+.footer__actions a:first-child .footer__button-label{color:#161a20}
+.footer__actions a:first-child:is(:hover,:focus-visible)::before{transform:scale(0)}
+.footer__actions a:first-child:is(:hover,:focus-visible) .footer__button-label{color:#fff}
+.footer__actions a:is(:hover,:focus-visible){border-color:#fff}
 .footer__actions a:focus-visible{outline:2px solid #fff;outline-offset:5px}
 .footer__arcade{position:absolute;top:32%;right:auto;left:clamp(-150px,-7vw,-96px);width:clamp(210px,13vw,250px);height:auto;transform:translateY(-50%) rotate(42deg);transform-origin:50% 55%;object-fit:contain;mix-blend-mode:normal}
 .footer__game-cta{top:48%;right:auto;left:clamp(24px,1.875vw,36px);width:177px;height:76px;padding:0;border:0;background:transparent;transform:none;cursor:pointer;box-shadow:none}
@@ -241,7 +244,7 @@
 }
 @media(max-width:900px){
   .concept-lab{z-index:auto}
-  .footer{position:relative;bottom:auto;z-index:auto;min-height:0;padding:56px var(--gutter) 24px;border-radius:0 0 24px 24px}
+  .footer{position:relative;bottom:auto;z-index:auto;min-height:0;padding:56px var(--gutter) 24px}
   .footer__top{min-height:285px;flex:0 0 auto;justify-content:flex-start;padding:0}
   .footer__contact{width:100%;max-width:none;justify-content:flex-start;gap:18px}
   .footer__contact h2{font-size:clamp(34px,7vw,56px)}
@@ -564,7 +567,7 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
   .download-icon::before{inset:3.5px}
   .download-icon svg{width:23px;height:23px}
   .download-animation{inset:3.5px}
-  .footer{gap:28px;padding:42px 24px 20px;border-radius:0 0 24px 24px}
+  .footer{gap:28px;padding:42px 24px 20px}
   .footer__top{width:100%;min-height:0;flex:0 0 auto;margin-right:0;padding:0}
   .footer__contact{width:100%;max-width:none;gap:16px}
   .footer__contact h2{font-size:clamp(36px,6vw,48px)}
@@ -594,3 +597,4 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
   .archive__show-all{display:none}
 }
 @media(max-width:900px){.archive__world.archive__tile--copy{display:none}}
+
