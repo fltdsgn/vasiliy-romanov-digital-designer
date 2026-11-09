@@ -78,10 +78,13 @@
 .experience__period span+span{margin-left:-1px}
 .experience__skills{display:flex;flex-wrap:wrap;align-items:flex-start}
 .experience__skills span{display:flex;min-height:48px;align-items:center;justify-content:center;margin-right:-1px;padding:12px 16px;border-radius:16px;background:#d4d4d4;font-size:16px;line-height:1.27;letter-spacing:-.02em;white-space:nowrap}
-.resume-button{position:relative;display:flex;width:100%;min-height:246px;align-items:center;justify-content:center;margin:0;padding:64px 24px;border:0;border-radius:120px;background:#0009f2;color:#fff;font-size:44px;font-weight:700;line-height:1;text-align:center;text-transform:uppercase;letter-spacing:.01em}
-.resume-button__content{position:absolute;top:50%;left:50%;display:flex;max-width:calc(100% - 48px);align-items:center;justify-content:center;gap:16px;white-space:nowrap;transform:translate(-50%,-50%)}
-.resume-button img{flex:none;width:40px;height:40px;max-width:none}
-.resume-button:hover{background:#111dff}
+.resume-button{--resume-blue:#0009f2;position:relative;isolation:isolate;overflow:hidden;display:flex;width:100%;min-height:251px;align-items:center;justify-content:center;margin:0;padding:103px 24px;border:.5px solid var(--resume-blue);border-radius:120px;background:transparent;color:var(--resume-blue);font-size:44px;font-weight:600;line-height:1;text-align:center;text-transform:uppercase;letter-spacing:.01em;transition:color .4s cubic-bezier(.22,1,.36,1)}
+.resume-button::before{content:"";position:absolute;z-index:-1;inset:0;border-radius:inherit;background:var(--resume-blue);transform:scale(0);transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.resume-button__content{position:absolute;z-index:1;top:50%;left:50%;display:flex;max-width:calc(100% - 48px);align-items:center;justify-content:center;gap:16px;white-space:nowrap;transform:translate(-50%,-50%)}
+.resume-button img{flex:none;width:40px;height:40px;max-width:none;transition:filter .4s cubic-bezier(.22,1,.36,1)}
+.resume-button:is(:hover,:focus-visible){color:#fff}
+.resume-button:is(:hover,:focus-visible)::before{transform:scale(1.05)}
+.resume-button:is(:hover,:focus-visible) img{filter:brightness(0) invert(1);transition:filter .4s cubic-bezier(.22,1,.36,1)}
 .resume-button:focus-visible{outline:3px solid var(--ink);outline-offset:5px}
 @media(max-width:900px){
   .experience.section-pad{gap:32px;padding-top:64px;padding-bottom:64px}
@@ -122,7 +125,7 @@
   .experience__skills span{font-size:12px;padding:9px 10px;min-height:36px}
   .resume-button{min-height:80px;font-size:18px;gap:8px;padding:36px 16px;border-radius:64px}
   .resume-button__content{gap:8px}
-  .resume-button img{width:24px;height:24px}
+  .resume-button img{transform:scale(.6);transform-origin:center}
 }
 .topbar{position:sticky;top:0;z-index:20;background:rgba(238,236,233,.78);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-bottom:0;transition:transform .28s ease,background-color .2s ease}.topbar.is-hidden{transform:translateY(-110%)}.topbar:focus-within{transform:translateY(0)}
 .topbar__link-label{display:flex;flex-direction:column;align-items:flex-start;line-height:1.25}
@@ -161,7 +164,7 @@
 .approach__muted{color:rgba(22,26,32,.5)}
 @media(max-width:600px){.approach h2{font-size:36px;line-height:1.08;letter-spacing:-.03em}}
 .telegram-icon{position:relative;overflow:hidden}
-.telegram-animation{position:absolute;inset:0;width:100%;height:100%;opacity:0;pointer-events:none;transition:opacity .16s ease}
+.telegram-animation{position:absolute;inset:2px;width:auto;height:auto;opacity:0;pointer-events:none;transition:opacity .16s ease}
 .telegram-icon.is-ready .telegram-animation{opacity:1}
 .telegram-icon.is-ready>svg path{opacity:0}
 .telegram-animation svg{display:block;width:100%;height:100%}
@@ -194,9 +197,13 @@
 .footer__contact h2{margin:0;font-size:clamp(42px,3.9583vw,76px);font-weight:700;line-height:1.02;letter-spacing:-.01em}
 .footer__contact>p{max-width:none;margin:0;color:#fff;font-size:clamp(16px,1.4583vw,28px);line-height:1.36;letter-spacing:-.01em}
 .footer__actions{display:flex;flex-wrap:wrap;gap:12px;margin:0}
-.footer__actions a{display:flex;min-height:76px;align-items:center;justify-content:center;padding:24px 32px;border:2px solid rgba(255,255,255,.4);border-radius:88px;color:#fff;font-size:16px;font-weight:700;text-align:center;text-transform:uppercase;white-space:nowrap;transition:background-color .2s,color .2s,border-color .2s}
+.footer__actions a{--button-ink:#fff;--button-surface:#161a20;position:relative;isolation:isolate;overflow:hidden;display:flex;min-height:76px;align-items:center;justify-content:center;padding:24px 32px;border:2px solid rgba(255,255,255,.4);border-radius:88px;background:transparent;color:#fff;font-size:16px;font-weight:700;text-align:center;text-transform:uppercase;white-space:nowrap;transition:border-color .4s cubic-bezier(.22,1,.36,1)}
+.footer__actions a::before{content:"";position:absolute;z-index:1;inset:0;border-radius:inherit;background:var(--button-ink);transform:scale(0);transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.footer__button-label{position:relative;z-index:2;display:inline-block;transition:color .4s cubic-bezier(.22,1,.36,1)}
 .footer__actions a:first-child{border-color:#fff;background:#fff;color:#161a20}
-.footer__actions a:hover{border-color:#fff;background:#fff;color:#161a20}
+.footer__actions a:is(:hover,:focus-visible)::before{transform:scale(1.05)}
+.footer__actions a:is(:hover,:focus-visible) .footer__button-label{color:var(--button-surface)}
+.footer__actions a:focus-visible{outline:2px solid #fff;outline-offset:5px}
 .footer__arcade{position:absolute;top:32%;right:auto;left:clamp(-150px,-7vw,-96px);width:clamp(210px,13vw,250px);height:auto;transform:translateY(-50%) rotate(42deg);transform-origin:50% 55%;object-fit:contain;mix-blend-mode:normal}
 .footer__game-cta{top:48%;right:auto;left:clamp(24px,1.875vw,36px);width:177px;height:76px;padding:0;border:0;background:transparent;transform:none;cursor:pointer;box-shadow:none}
 .footer__game-cta img{width:100%;height:100%;object-fit:contain}
@@ -308,7 +315,7 @@
   .hero h1{max-width:1194px;margin:24px 0 35px;font-size:clamp(48px,7vw,96px);font-weight:550;line-height:.99;letter-spacing:-.045em}
   .portfolio__copy>p{flex:0 1 419px;width:319px;max-width:419px;margin:0;font-size:clamp(18px,1.25vw,24px);line-height:1.27;letter-spacing:-.02em}
   .approach h2{max-width:1142px;font-size:clamp(38px,3.43vw,85px);line-height:1.17;font-weight:500;letter-spacing:-.01em}
-  .resume-button{position:relative;display:flex;width:100%;min-height:116px;align-items:center;justify-content:center;margin:0;padding:64px 24px;border:0;border-radius:120px;background:#0009f2;color:#fff;font-size:24px;font-weight:700;line-height:1;text-align:center;text-transform:uppercase;letter-spacing:.01em}
+  .resume-button{min-height:116px;padding:64px 24px;border-radius:120px;font-size:24px}
 }
 
 /* Mobile uses a natural page flow, with the footer after the concept section. */
@@ -384,10 +391,11 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
 /* Frosted ticker pills follow the pointer inside project frames and showreel. */
 .project__media{position:relative}
 .project__hover-pill,.showreel__cursor{overflow:hidden;border:1px solid rgba(255,255,255,.72);background:rgba(20,21,29,.68);color:#fff;-webkit-backdrop-filter:blur(7px) saturate(120%);backdrop-filter:blur(7px) saturate(120%);box-shadow:0 8px 26px rgba(0,0,0,.16)}
-.project__hover-pill{position:absolute;left:0;top:0;z-index:2;display:flex;width:min(340px,calc(100% - 32px));height:54px;align-items:center;border-radius:17px;opacity:0;pointer-events:none;transform:translate3d(var(--pill-x,50%),var(--pill-y,50%),0) translateY(-50%);transition:opacity .2s ease;will-change:transform,opacity}
+.project__hover-pill{position:absolute;left:0;top:0;z-index:2;display:flex;width:184px;height:54px;align-items:center;justify-content:center;border-radius:17px;opacity:0;pointer-events:none;transform:translate3d(var(--pill-x,50%),var(--pill-y,50%),0) translateY(-50%);transition:opacity .2s ease;will-change:transform,opacity}
+.project__hover-pill .hover-pill__viewport{flex:0 0 168px;width:168px}
 .hover-pill__viewport{display:block;flex:1;min-width:0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 11%,#000 89%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 11%,#000 89%,transparent 100%)}
 .project__media.is-hovering .project__hover-pill,.project:focus-visible .project__hover-pill{opacity:1}
-.hover-pill__ticker{display:flex;width:max-content;flex:none;align-items:center;gap:0;animation:hover-pill-marquee 13s linear infinite;animation-play-state:paused}
+.hover-pill__ticker{display:flex;width:max-content;flex:none;align-items:center;gap:0;animation:hover-pill-marquee 13s linear infinite;animation-duration:var(--ticker-duration,6s);animation-play-state:paused}
 .project__media.is-hovering .hover-pill__ticker,.showreel__screen.has-cursor-control .hover-pill__ticker{animation-play-state:running}
 .project__hover-pill .hover-pill__ticker{animation-name:case-pill-marquee}
 .hover-pill__ticker span{flex:none;padding-right:0;white-space:nowrap;font:600 14px/1 'TT Interfaces',Arial,sans-serif;letter-spacing:.035em}
@@ -397,30 +405,37 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
 .showreel__screen.has-cursor-control .showreel__cursor,.showreel__cursor:focus-visible{opacity:1;pointer-events:auto;transform:translate3d(var(--cursor-x,50%),var(--cursor-y,50%),0) translate(-50%,-50%)}
 .showreel__cursor:hover{background:rgba(20,21,29,.82);color:#fff;transform:translate3d(var(--cursor-x,50%),var(--cursor-y,50%),0) translate(-50%,-50%)}
 .showreel__cursor svg{width:24px;height:24px;flex:none}
-.showreel__cursor .hover-pill__ticker{gap:0;animation-duration:16s;animation-play-state:running}
+.showreel__cursor .hover-pill__ticker{gap:0;animation-play-state:running}
 .showreel__cursor .hover-pill__ticker span{font-size:14px}
 @media(any-hover:none){.showreel__cursor{width:54px;height:54px;gap:0;padding:0;border-radius:50%}.showreel__cursor .hover-pill__ticker{display:none}}
-@media(max-width:600px){.project__hover-pill{height:46px;border-radius:14px}.project__hover-pill .hover-pill__ticker span{font-size:12px;padding-right:0}}
+@media(max-width:600px){.project__hover-pill{width:164px;height:46px;border-radius:14px}.project__hover-pill .hover-pill__viewport{flex-basis:148px;width:148px}.project__hover-pill .hover-pill__ticker span{font-size:12px;padding-right:0}}
 @media(prefers-reduced-motion:reduce){.project__hover-pill,.showreel__cursor{transition:none}.hover-pill__ticker{animation:none}}
 
 /* Header refinements from the updated Figma frame */
 .topbar{height:88px;padding:24px 36px}
 .topbar__contact,.topbar__cv{gap:12px;font-family:'TT Interfaces',Arial,sans-serif;font-size:16px;font-weight:600;line-height:1.25}
 .topbar__name{top:50%;left:50%;transform:translate(-50%,-50%);font-family:'TT Interfaces',Arial,sans-serif;font-size:18px;font-weight:600;line-height:.95;white-space:nowrap}
-.topbar__link-label{line-height:20px}
-.telegram-icon{width:40px;height:40px;border-radius:10px;background:#dcdad6;color:var(--ink)}
+.topbar__link-label{line-height:20px;white-space:nowrap}
+.topbar__contact .topbar__link-label{flex-direction:row;gap:4px}
+.topbar__cv .topbar__link-label{position:relative;display:inline-block;padding-bottom:3px}
+.topbar__cv .topbar__link-label::after{content:"";position:absolute;right:0;bottom:0;left:0;height:3px;background:radial-gradient(circle,currentColor .7px,transparent .9px) left center/5px 3px repeat-x;opacity:.5;clip-path:inset(0);transition:clip-path .38s cubic-bezier(.2,.75,.25,1)}
+.topbar__cv:hover .topbar__link-label::after,.topbar__cv:focus-visible .topbar__link-label::after{clip-path:inset(0 0 0 100%)}
+.telegram-icon{width:44px;height:44px;border-radius:10px;background:#dcdad6;color:var(--ink)}
 .telegram-icon::before{display:none}
-.telegram-icon>svg{position:relative;z-index:1;width:34px;height:34px}
+.telegram-icon>svg{position:relative;z-index:1;width:27px;height:27px}
 .telegram-icon .telegram-animation{z-index:2}
 .telegram-icon>svg path{fill:var(--ink)}
 .telegram-animation svg path{stroke:var(--ink)!important}
 .download-icon{position:relative;width:40px;height:40px;border-radius:10px;background:#dcdad6;color:var(--ink)}
 .download-icon::before{display:none}
-.download-icon svg{position:relative;z-index:1;width:16px;height:16px}
-.download-animation{inset:12px;z-index:1}
+.download-icon>svg{display:none}
+.download-icon::before{content:"";display:block;position:absolute;inset:6.5px;background:url("assets/icons/file-text.svg") center/contain no-repeat;z-index:1}
+.download-icon.is-ready::before{opacity:0}
+.download-icon svg{position:relative;z-index:1;width:27px;height:27px}
+.download-animation{inset:6.5px;z-index:2}
 .download-animation svg path{stroke:var(--ink)!important}
-@media(max-width:900px){.topbar{height:64px;padding:10px 16px}.topbar__name{font-size:15px}.topbar__contact,.topbar__cv{font-size:11px;gap:6px}.telegram-icon{width:32px;height:32px;border-radius:8px}.telegram-icon svg{width:30px;height:30px}.download-icon{width:32px;height:32px;border-radius:8px}.download-icon svg{width:14px;height:14px}.download-animation{inset:9px}}
-@media(max-width:600px){.topbar{padding-inline:12px}.topbar__name{font-size:14px}.topbar__contact,.topbar__cv{font-size:10px;gap:5px}.telegram-icon{width:28px;height:28px}.telegram-icon svg{width:28px;height:28px}.download-icon{width:30px;height:30px}.download-icon svg{width:13px;height:13px}.download-animation{inset:8px}}
+@media(max-width:900px){.topbar{height:64px;padding:10px 16px}.topbar__name{font-size:15px}.topbar__contact,.topbar__cv{font-size:11px;gap:6px}.telegram-icon{width:36px;height:36px;border-radius:8px}.telegram-icon svg{width:25px;height:25px}.download-icon{width:32px;height:32px;border-radius:8px}.download-icon::before{inset:3.5px}.download-icon svg{width:25px;height:25px}.download-animation{inset:3.5px}}
+@media(max-width:600px){.topbar{padding-inline:12px}.topbar__name{font-size:14px}.topbar__contact,.topbar__cv{font-size:10px;gap:5px}.telegram-icon{width:32px;height:32px}.telegram-icon svg{width:28px;height:28px}.download-icon{width:30px;height:30px}.download-icon svg{width:16px;height:16px}.download-animation{inset:7px}}
 .portfolio__heading h2 span{color:var(--ink)}
 :root{font-family:'TT Interfaces',Arial,sans-serif}
 .hero h1,.portfolio__heading h2,.approach h2,.archive__heading h2,.experience__heading h2,.footer__contact h2,.job h3{font-family:'TT Interfaces',Arial,sans-serif;font-weight:500}
@@ -543,11 +558,12 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
   .topbar__name{font-size:14px}
   .topbar__links{gap:10px}
   .topbar__contact,.topbar__cv{font-size:10px;gap:4px}
-  .telegram-icon{width:28px;height:28px}
-  .telegram-icon svg{width:28px;height:28px}
+  .telegram-icon{width:32px;height:32px}
+  .telegram-icon svg{width:23px;height:23px}
   .download-icon{width:30px;height:30px}
-  .download-icon svg{width:13px;height:13px}
-  .download-animation{inset:8px}
+  .download-icon::before{inset:3.5px}
+  .download-icon svg{width:23px;height:23px}
+  .download-animation{inset:3.5px}
   .footer{gap:28px;padding:42px 24px 20px;border-radius:0 0 24px 24px}
   .footer__top{width:100%;min-height:0;flex:0 0 auto;margin-right:0;padding:0}
   .footer__contact{width:100%;max-width:none;gap:16px}
@@ -577,3 +593,4 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
   .archive-card__caption small{font-size:11px;line-height:1.25;color:var(--muted)}
   .archive__show-all{display:none}
 }
+@media(max-width:900px){.archive__world.archive__tile--copy{display:none}}

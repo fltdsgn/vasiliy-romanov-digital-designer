@@ -19,6 +19,16 @@ const bindRussianPrepositions = (root) => {
 
 bindRussianPrepositions(document.body);
 
+const syncHoverPillTickerSpeed = () => {
+  document.querySelectorAll('.hover-pill__ticker').forEach((ticker) => {
+    const distance = ticker.scrollWidth / 2;
+    if (distance > 0) ticker.style.setProperty('--ticker-duration', `${distance / 42}s`);
+  });
+};
+syncHoverPillTickerSpeed();
+document.fonts?.ready.then(syncHoverPillTickerSpeed);
+window.addEventListener('resize', syncHoverPillTickerSpeed, { passive: true });
+
 const topbar = document.querySelector('.topbar');
 const desktopResumeLabel = document.querySelector('.topbar__cv .topbar__link-label span:last-child');
 const topbarResumeLink = document.querySelector('.topbar__cv');
@@ -28,7 +38,7 @@ const mobileResumeLabel = document.querySelector('.topbar__cv .topbar__mobile-la
 const experienceResumeLabel = document.querySelector('.resume-button__content');
 const footerResumeLabel = document.querySelector('.footer__actions a[href$=".pdf"]');
 if (mobileResumeLabel) mobileResumeLabel.textContent = 'Смотреть резюме';
-if (experienceResumeLabel?.firstChild) experienceResumeLabel.firstChild.textContent = 'Смотреть резюме ';
+if (experienceResumeLabel?.firstChild) experienceResumeLabel.firstChild.textContent = 'Посмотреть резюме ';
 if (footerResumeLabel) footerResumeLabel.textContent = 'Смотреть резюме';
 
 const telegramLink = document.querySelector('.topbar__contact');
@@ -153,6 +163,7 @@ if ('IntersectionObserver' in window && !prefersReducedMotion.matches) {
   requestAnimationFrame(() => requestAnimationFrame(() => {
     topbar?.classList.add('is-entrance-visible');
     hero?.classList.add('is-entrance-visible');
+    if (window.matchMedia('(max-width: 600px)').matches) floatingNav?.classList.add('is-entrance-visible');
     initialEntranceTargets.forEach((element) => element.classList.add('is-scroll-revealed'));
   }));
 }
@@ -337,7 +348,7 @@ if (window.lottie && downloadLink && downloadTile && downloadAnimationContainer)
     renderer: 'svg',
     loop: false,
     autoplay: false,
-    path: 'assets/icons/download-v2.json',
+    path: 'assets/icons/file-text.json',
   });
   let resetDownloadAfterPlay = false;
 
@@ -437,11 +448,10 @@ const archivePeriodX = 2704;
 const archivePeriodY = 1560;
 const archiveViewStorageKey = 'vasiliy-romanov-portfolio-archive-view-v5';
 
-if (archiveBoard && archiveWorld && archiveTile && desktopArchive.matches) {
-  archiveCards.forEach((card, index) => {
-    card.style.left = `${(index % 4) * 676}px`;
-    card.style.top = `${Math.floor(index / 4) * 520}px`;
-  });
+const syncArchiveCopies = () => {
+  if (!archiveWorld || !archiveTile) return;
+  archiveWorld.querySelectorAll(':scope > .archive__tile--copy').forEach((copy) => copy.remove());
+  if (!desktopArchive.matches) return;
 
   for (let row = 0; row < 3; row += 1) {
     for (let column = 0; column < 3; column += 1) {
@@ -455,6 +465,16 @@ if (archiveBoard && archiveWorld && archiveTile && desktopArchive.matches) {
       archiveWorld.append(tileCopy);
     }
   }
+};
+
+syncArchiveCopies();
+desktopArchive.addEventListener('change', syncArchiveCopies);
+
+if (archiveBoard && archiveWorld && archiveTile && desktopArchive.matches) {
+  archiveCards.forEach((card, index) => {
+    card.style.left = `${(index % 4) * 676}px`;
+    card.style.top = `${Math.floor(index / 4) * 520}px`;
+  });
 
   try {
     const savedView = JSON.parse(localStorage.getItem(archiveViewStorageKey) || 'null');
