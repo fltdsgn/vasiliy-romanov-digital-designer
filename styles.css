@@ -551,7 +551,10 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
   .topbar__contact,.topbar__cv{flex:none;font-size:13px;white-space:nowrap}
   .topbar__cv .topbar__mobile-label{max-width:none;white-space:nowrap}
   .topbar__mobile-label{display:block}
-  .float-nav{width:calc(100vw - 32px);max-width:calc(100vw - 32px);justify-content:space-between;padding:5px 8px}
+  .float-nav{left:16px;right:16px;width:auto;max-width:none;justify-content:space-between;padding:5px 8px;transform:none}
+  html.has-hero-entrance .float-nav.is-entrance-pending{transform:translateY(24px)}
+  html.has-hero-entrance .float-nav.is-entrance-visible{transform:none}
+  @media(prefers-reduced-motion:reduce){html.has-hero-entrance .float-nav.is-entrance-pending,html.has-hero-entrance .float-nav.is-entrance-visible{transform:none}}
   .float-nav__mobile-label{display:inline}
   .float-nav>a{min-height:48px;padding:10px 12px;font-size:14px;line-height:18px}
   .archive__show-all{display:flex}
