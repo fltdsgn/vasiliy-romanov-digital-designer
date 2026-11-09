@@ -35,10 +35,10 @@ const topbarResumeLink = document.querySelector('.topbar__cv');
 if (desktopResumeLabel) desktopResumeLabel.textContent = 'резюме';
 topbarResumeLink?.setAttribute('aria-label', 'Смотреть резюме');
 const mobileResumeLabel = document.querySelector('.topbar__cv .topbar__mobile-label');
-const experienceResumeLabel = document.querySelector('.resume-button__content');
+const experienceResumeLabel = document.querySelector('.resume-button__label');
 const footerResumeLabel = document.querySelector('.footer__actions a[href$=".pdf"]');
 if (mobileResumeLabel) mobileResumeLabel.textContent = 'Смотреть резюме';
-if (experienceResumeLabel?.firstChild) experienceResumeLabel.firstChild.textContent = 'Посмотреть резюме ';
+if (experienceResumeLabel) experienceResumeLabel.textContent = 'Посмотреть резюме';
 if (footerResumeLabel) footerResumeLabel.textContent = 'Смотреть резюме';
 
 const telegramLink = document.querySelector('.topbar__contact');
@@ -412,6 +412,23 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 const floatingNavLinks = [...document.querySelectorAll('.float-nav > a[href^="#"]')];
+const floatingNavHashes = new Set(floatingNavLinks.map((link) => link.hash));
+const floatingNavReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+if (floatingNavHashes.has(window.location.hash)) {
+  history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+  window.scrollTo(0, 0);
+}
+
+floatingNavLinks.forEach((link) => {
+  link.addEventListener('click', (event) => {
+    const target = document.querySelector(link.hash);
+    if (!target) return;
+    event.preventDefault();
+    target.scrollIntoView({ behavior: floatingNavReducedMotion.matches ? 'auto' : 'smooth', block: 'start' });
+  });
+});
+
 const floatingNavSections = floatingNavLinks
   .map((link) => document.querySelector(link.getAttribute('href')))
   .filter(Boolean);
@@ -944,4 +961,5 @@ if (conceptStage) {
     if (!conceptRunning) renderConceptCarousel(conceptPausedElapsed, false);
   }, {passive:true});
 }
+
 
