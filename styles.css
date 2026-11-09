@@ -448,7 +448,7 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
   .topbar__name{position:static;left:auto;top:auto;transform:none;flex:none;font-size:15px;font-weight:600;line-height:.95}
   .topbar__links{display:flex;width:auto;flex:none;align-items:center;justify-content:flex-end;gap:20px}
   .topbar__contact,.topbar__cv{gap:0;font-size:14px;font-weight:600;line-height:20px}
-  .telegram-icon,.download-icon,.topbar__link-label{display:none}
+  .telegram-icon,.download-icon,.topbar__link-label,.topbar__contact .topbar__link-label,.topbar__cv .topbar__link-label{display:none}
   .topbar__mobile-label{display:block;text-decoration-line:underline;text-decoration-style:dotted;text-decoration-color:rgba(22,26,32,.55);text-underline-offset:4px}
   .hero{min-height:0;padding:36px 16px}
   .hero__intro{font-size:16px}
