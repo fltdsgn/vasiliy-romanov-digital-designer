@@ -1006,12 +1006,15 @@ if (conceptHelixStage) {
       item.loading = 'lazy';
       item.decoding = 'async';
     }
+    item.addEventListener(type === 'video' ? 'loadeddata' : 'load', () => card.classList.add('is-media-ready'), {once:true});
+    item.addEventListener('error', () => card.classList.remove('is-media-ready'));
     card.append(item);
     gallery.append(card);
     return {card,item,type,index};
   });
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const compact = matchMedia('(max-width: 900px)');
+  const mobileCards = [...cards.slice(0,4), cards[5]];
   let active = false;
   let frame = 0;
   let phase = 0;
@@ -1019,9 +1022,58 @@ if (conceptHelixStage) {
   let idlePhase = 0;
   let lastFrameTime = 0;
   let lastInteraction = performance.now();
+  let mobileFrame = 0;
   const noteInteraction = () => { lastInteraction = performance.now(); };
 
   const pauseVideos = () => cards.forEach(({item,type}) => { if (type === 'video' && !item.paused) item.pause(); });
+  function renderMobile() {
+    mobileFrame = 0;
+    if (!active || !compact.matches || document.hidden) return;
+    const rect = conceptHelixStage.getBoundingClientRect();
+    const range = Math.max(1, conceptHelixStage.offsetHeight - innerHeight);
+    const progress = Math.max(0, Math.min(1, -rect.top / range));
+    const mobilePhase = progress * mobileCards.length;
+    const bounds = gallery.getBoundingClientRect();
+    const cardHeight = Math.min(bounds.width * 0.88, 510) * 580 / 510;
+    const travel = Math.min(bounds.height * 0.34 + cardHeight * 0.25, innerHeight * 0.58);
+    const stackStep = Math.min(14, innerHeight * 0.016);
+    const activeIndex = Math.min(mobileCards.length - 1, Math.floor(mobilePhase));
+    const transition = Math.max(0, Math.min(1, mobilePhase - activeIndex));
+    cards.forEach((entry) => {
+      const {card,item,type} = entry;
+      const mobileIndex = mobileCards.indexOf(entry);
+      if (mobileIndex < 0) {
+        card.style.display = 'none';
+        card.style.opacity = '0';
+        card.style.visibility = 'hidden';
+        card.style.pointerEvents = 'none';
+        if (type === 'video' && !item.paused) item.pause();
+        return;
+      }
+      card.style.display = '';
+      const stackDepth = mobileIndex - activeIndex;
+      const isFront = mobileIndex === activeIndex;
+      const isLast = mobileIndex === mobileCards.length - 1;
+      const visible = stackDepth >= 0 && (!(isFront && transition >= 1) || isLast) && card.classList.contains('is-media-ready');
+      card.style.width = `${Math.min(bounds.width * 0.88, 510)}px`;
+      card.style.height = `min(${cardHeight}px, 52svh)`;
+      card.style.opacity = visible ? '1' : '0';
+      card.style.visibility = visible ? 'visible' : 'hidden';
+      card.style.zIndex = String(isFront ? 120 : 100 - stackDepth);
+      card.style.pointerEvents = isFront ? (isLast || transition < 0.95 ? 'auto' : 'none') : 'none';
+      const y = isFront ? (isLast ? 0 : transition * travel) : stackDepth * stackStep - transition * stackStep;
+      const scale = 1 - stackDepth * 0.012;
+      card.style.transform = `translate3d(-50%,calc(-50% + ${y}px),0) scale(${scale})`;
+      if (type === 'video') {
+        const shouldPlay = stackDepth >= 0 && (isFront || stackDepth === 1 && transition > 0.45) && (isLast || transition < 1);
+        if (shouldPlay && item.paused) item.play().catch(() => {});
+        else if (!shouldPlay && !item.paused) item.pause();
+      }
+    });
+  }
+  const requestMobileRender = () => {
+    if (active && compact.matches && !mobileFrame && !document.hidden) mobileFrame = requestAnimationFrame(renderMobile);
+  };
   const requestRender = () => {
     if (active && !frame && !document.hidden && !compact.matches && !reduced.matches) frame = requestAnimationFrame(render);
   };
@@ -1031,10 +1083,10 @@ if (conceptHelixStage) {
     const now = performance.now();
     const delta = lastFrameTime ? Math.min((now - lastFrameTime) / 1000, 0.05) : 0;
     lastFrameTime = now;
-    if (hoverIndex === null && now - lastInteraction > 900) idlePhase += delta * 0.32;
+    if (hoverIndex === null && now - lastInteraction > 900) idlePhase = Math.min(cards.length * 0.5, idlePhase + delta * 0.16);
     const rect = conceptHelixStage.getBoundingClientRect();
     const range = Math.max(1, conceptHelixStage.offsetHeight - innerHeight);
-    const scrollPhase = Math.max(0, Math.min(1, -rect.top / range)) * cards.length * 2 + idlePhase;
+    const scrollPhase = Math.max(0, Math.min(1, -rect.top / range)) * cards.length + idlePhase;
     const target = hoverIndex === null
       ? scrollPhase
       : hoverIndex + Math.round((phase - hoverIndex) / cards.length) * cards.length;
@@ -1047,6 +1099,7 @@ if (conceptHelixStage) {
     const rowGap = Math.min(bounds.height * 0.16, 150);
     const cardWidth = Math.min(bounds.width * 0.22, 360);
     cards.forEach(({card,item,type,index}) => {
+      card.style.display = '';
       const slot = ((index - phase + cards.length / 2) % cards.length + cards.length) % cards.length - cards.length / 2;
       const angle = slot * Math.PI / 4;
       const x = Math.sin(angle) * radiusX;
@@ -1077,13 +1130,18 @@ if (conceptHelixStage) {
   });
   gallery.addEventListener('pointerleave', () => { noteInteraction(); hoverIndex = null; requestRender(); });
   const update = () => {
-    if (compact.matches || reduced.matches || document.hidden) {
+    if (compact.matches) {
       if (frame) cancelAnimationFrame(frame);
       frame = 0;
-      if (reduced.matches || document.hidden) pauseVideos();
+      if (document.hidden) pauseVideos();
+      else requestMobileRender();
+    } else if (reduced.matches || document.hidden) {
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
+      pauseVideos();
     } else requestRender();
   };
-  addEventListener('scroll', () => { hoverIndex = null; noteInteraction(); requestRender(); }, {passive:true});
+  addEventListener('scroll', () => { hoverIndex = null; noteInteraction(); compact.matches ? requestMobileRender() : requestRender(); }, {passive:true});
   addEventListener('resize', update, {passive:true});
   document.addEventListener('visibilitychange', update);
   reduced.addEventListener?.('change', update);
@@ -1094,13 +1152,5 @@ if (conceptHelixStage) {
       if (active) update();
       else { if (frame) cancelAnimationFrame(frame); frame = 0; pauseVideos(); }
     }, {threshold:0,rootMargin:'120px 0px'}).observe(conceptHelixStage);
-    const mobileVideos = new IntersectionObserver((entries) => {
-      if (!compact.matches || reduced.matches || document.hidden) return;
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.play().catch(() => {});
-        else entry.target.pause();
-      });
-    }, {threshold:0.15,rootMargin:'100px 0px'});
-    cards.filter(({type}) => type === 'video').forEach(({item}) => mobileVideos.observe(item));
   } else { active = true; update(); }
 }
