@@ -101,31 +101,24 @@ if ('IntersectionObserver' in window && !prefersReducedMotion.matches) {
 
   const titleStartDelay = 220;
   const titleWordStep = 68;
-  const wordTransitionDuration = 760;
   const titleWordCount = revealWords(heroTitle, titleStartDelay, titleWordStep);
   const descriptionStartDelay = titleStartDelay + Math.max(0, titleWordCount - 1) * titleWordStep + 100;
   const descriptionWordStep = 58;
-  const descriptionWordCount = revealWords(heroDescription, descriptionStartDelay, descriptionWordStep);
-  revealWords(document.querySelector('.portfolio__heading h2'), 80, 58, 'portfolio__word');
-  revealWords(document.querySelector('.approach h2'), 80, 68, 'approach__word');
-  let heroTextComplete = false;
+  revealWords(heroDescription, descriptionStartDelay, descriptionWordStep);
+  let heroDescriptionStarted = false;
   let showreelIsVisible = false;
   let showreelWasRevealed = false;
-  const revealShowreelAfterText = () => {
-    const mobile = window.matchMedia('(max-width: 600px)').matches;
-    if ((!heroTextComplete && !mobile) || !showreelIsVisible || showreelWasRevealed || !showreelSection) return;
+  const revealShowreelWhenReady = () => {
+    if (!heroDescriptionStarted || !showreelIsVisible || showreelWasRevealed || !showreelSection) return;
     showreelWasRevealed = true;
     showreelSection.classList.add('is-scroll-revealed');
   };
-
+  revealWords(document.querySelector('.portfolio__heading h2'), 80, 58, 'portfolio__word');
+  revealWords(document.querySelector('.approach h2'), 80, 68, 'approach__word');
   if (showreelSection) {
     showreelSection.dataset.scrollReveal = '';
-    showreelSection.style.setProperty('--scroll-reveal-delay', '0ms');
+    showreelSection.style.setProperty('--scroll-reveal-delay', '200ms');
   }
-  window.setTimeout(() => {
-    heroTextComplete = true;
-    revealShowreelAfterText();
-  }, descriptionStartDelay + Math.max(0, descriptionWordCount - 1) * descriptionWordStep + wordTransitionDuration);
   showreelSection?.addEventListener('transitionend', (event) => {
     if (event.target !== showreelSection || event.propertyName !== 'opacity') return;
     floatingNav?.classList.add('is-entrance-visible');
@@ -147,8 +140,8 @@ if ('IntersectionObserver' in window && !prefersReducedMotion.matches) {
       if (!entry.isIntersecting) return;
       if (entry.target === showreelSection) {
         showreelIsVisible = true;
-        revealShowreelAfterText();
         observer.unobserve(entry.target);
+        revealShowreelWhenReady();
         return;
       }
       entry.target.classList.add('is-scroll-revealed');
@@ -165,6 +158,11 @@ if ('IntersectionObserver' in window && !prefersReducedMotion.matches) {
     hero?.classList.add('is-entrance-visible');
     if (window.matchMedia('(max-width: 600px)').matches) floatingNav?.classList.add('is-entrance-visible');
     initialEntranceTargets.forEach((element) => element.classList.add('is-scroll-revealed'));
+    document.documentElement.classList.remove('js-motion-pending');
+    window.setTimeout(() => {
+      heroDescriptionStarted = true;
+      revealShowreelWhenReady();
+    }, descriptionStartDelay);
   }));
 }
 
@@ -487,11 +485,21 @@ const syncArchiveCopies = () => {
 syncArchiveCopies();
 desktopArchive.addEventListener('change', syncArchiveCopies);
 
+if (archiveBoard && desktopArchive.matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+  const archiveHintObserver = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return;
+    archiveBoard.classList.add('has-nudge-hint');
+    archiveHintObserver.disconnect();
+  }, { threshold: 0.2 });
+  archiveHintObserver.observe(archiveBoard);
+}
+
 if (archiveBoard && archiveWorld && archiveTile && desktopArchive.matches) {
   archiveCards.forEach((card, index) => {
     card.style.left = `${(index % 4) * 676}px`;
     card.style.top = `${Math.floor(index / 4) * 520}px`;
   });
+  syncArchiveCopies();
 
   try {
     const savedView = JSON.parse(localStorage.getItem(archiveViewStorageKey) || 'null');
@@ -521,6 +529,7 @@ if (archiveBoard && archiveWorld && archiveTile && desktopArchive.matches) {
   archiveBoard.addEventListener('pointerdown', (event) => {
     if (!desktopArchive.matches || event.button !== 0) return;
     event.preventDefault();
+    archiveBoard.closest('.archive')?.querySelector('.archive__drag-hint')?.classList.add('is-dismissed');
     panStart = {
       pointerId: event.pointerId,
       x: event.clientX,
@@ -534,6 +543,7 @@ if (archiveBoard && archiveWorld && archiveTile && desktopArchive.matches) {
 
   archiveBoard.addEventListener('pointermove', (event) => {
     if (!panStart || event.pointerId !== panStart.pointerId) return;
+    archiveBoard.classList.remove('has-nudge-hint');
     archiveWorld.style.left = `${wrap(panStart.left + event.clientX - panStart.x, archivePeriodX)}px`;
     archiveWorld.style.top = `${wrap(panStart.top + event.clientY - panStart.y, archivePeriodY)}px`;
   });
@@ -962,4 +972,135 @@ if (conceptStage) {
   }, {passive:true});
 }
 
+const conceptHelixStage = document.querySelector('[data-helix-stage]');
+if (conceptHelixStage) {
+  const gallery = conceptHelixStage.querySelector('[data-helix-gallery]');
+  const media = [
+    ['assets/concepts/video/home.webm','video'],
+    ['assets/concepts/concept-bathroom.webp','image'],
+    ['assets/concepts/video/account-opening.webm','video'],
+    ['assets/concepts/video/device-page.webm','video'],
+    ['assets/concepts/video/full-short-animation.webm','video'],
+    ['assets/concepts/concept-keys.webp','image'],
+    ['assets/concepts/video/new-animation.webm','video'],
+    ['assets/concepts/video/t-cinema.webm','video'],
+    ['assets/concepts/concept-fine.webp','image'],
+    ['assets/concepts/video/web-full-animation.webm','video'],
+  ];
+  const cards = media.map(([src,type], index) => {
+    const card = document.createElement('figure');
+    card.className = 'concept-helix__card';
+    card.tabIndex = 0;
+    card.setAttribute('aria-label', `Концепт ${String(index + 1).padStart(2,'0')}`);
+    const item = document.createElement(type === 'video' ? 'video' : 'img');
+    item.src = src;
+    if (type === 'video') {
+      item.muted = true;
+      item.loop = true;
+      item.playsInline = true;
+      item.preload = 'none';
+      item.setAttribute('muted','');
+      item.setAttribute('playsinline','');
+    } else {
+      item.alt = '';
+      item.loading = 'lazy';
+      item.decoding = 'async';
+    }
+    card.append(item);
+    gallery.append(card);
+    return {card,item,type,index};
+  });
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const compact = matchMedia('(max-width: 900px)');
+  let active = false;
+  let frame = 0;
+  let phase = 0;
+  let hoverIndex = null;
+  let idlePhase = 0;
+  let lastFrameTime = 0;
+  let lastInteraction = performance.now();
+  const noteInteraction = () => { lastInteraction = performance.now(); };
 
+  const pauseVideos = () => cards.forEach(({item,type}) => { if (type === 'video' && !item.paused) item.pause(); });
+  const requestRender = () => {
+    if (active && !frame && !document.hidden && !compact.matches && !reduced.matches) frame = requestAnimationFrame(render);
+  };
+  function render() {
+    frame = 0;
+    if (!active || document.hidden || compact.matches || reduced.matches) return;
+    const now = performance.now();
+    const delta = lastFrameTime ? Math.min((now - lastFrameTime) / 1000, 0.05) : 0;
+    lastFrameTime = now;
+    if (hoverIndex === null && now - lastInteraction > 900) idlePhase += delta * 0.32;
+    const rect = conceptHelixStage.getBoundingClientRect();
+    const range = Math.max(1, conceptHelixStage.offsetHeight - innerHeight);
+    const scrollPhase = Math.max(0, Math.min(1, -rect.top / range)) * cards.length * 2 + idlePhase;
+    const target = hoverIndex === null
+      ? scrollPhase
+      : hoverIndex + Math.round((phase - hoverIndex) / cards.length) * cards.length;
+    phase += (target - phase) * 0.11;
+    if (Math.abs(target - phase) < 0.001) phase = target;
+
+    const bounds = gallery.getBoundingClientRect();
+    const radiusX = Math.min(bounds.width * 0.25, 420);
+    const radiusZ = Math.min(bounds.height * 0.38, 390);
+    const rowGap = Math.min(bounds.height * 0.16, 150);
+    const cardWidth = Math.min(bounds.width * 0.22, 360);
+    cards.forEach(({card,item,type,index}) => {
+      const slot = ((index - phase + cards.length / 2) % cards.length + cards.length) % cards.length - cards.length / 2;
+      const angle = slot * Math.PI / 4;
+      const x = Math.sin(angle) * radiusX;
+      const y = slot * rowGap;
+      const z = Math.cos(angle) * radiusZ;
+      const depth = Math.abs(slot);
+      const sizeScale = Math.max(0.52, 1 - depth * 0.075);
+      const visible = depth < 7.15;
+      card.style.width = `${cardWidth}px`;
+      card.style.height = `${cardWidth * 580 / 510}px`;
+      card.style.opacity = visible ? String(Math.min(1, Math.max(0, (7.2 - depth) / 1))) : '0';
+      card.style.visibility = visible ? 'visible' : 'hidden';
+      card.style.zIndex = String(Math.round(10 + z));
+      card.style.pointerEvents = visible ? 'auto' : 'none';
+      card.style.transform = `translate3d(calc(-50% + ${x}px),calc(-50% + ${y}px),${z}px) rotateY(${Math.sin(angle) * -22}deg) scale(${sizeScale})`;
+      if (type === 'video') {
+        if (visible && depth < 2.75 && item.paused) item.play().catch(() => {});
+        else if ((!visible || depth >= 2.75) && !item.paused) item.pause();
+      }
+    });
+    frame = requestAnimationFrame(render);
+  }
+
+  cards.forEach(({card,index}) => {
+    card.addEventListener('pointerenter', (event) => { if (event.pointerType !== 'touch') { noteInteraction(); hoverIndex = index; requestRender(); } });
+    card.addEventListener('focus', () => { noteInteraction(); hoverIndex = index; requestRender(); });
+    card.addEventListener('blur', () => { noteInteraction(); hoverIndex = null; requestRender(); });
+  });
+  gallery.addEventListener('pointerleave', () => { noteInteraction(); hoverIndex = null; requestRender(); });
+  const update = () => {
+    if (compact.matches || reduced.matches || document.hidden) {
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
+      if (reduced.matches || document.hidden) pauseVideos();
+    } else requestRender();
+  };
+  addEventListener('scroll', () => { hoverIndex = null; noteInteraction(); requestRender(); }, {passive:true});
+  addEventListener('resize', update, {passive:true});
+  document.addEventListener('visibilitychange', update);
+  reduced.addEventListener?.('change', update);
+  compact.addEventListener?.('change', update);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      active = entry.isIntersecting;
+      if (active) update();
+      else { if (frame) cancelAnimationFrame(frame); frame = 0; pauseVideos(); }
+    }, {threshold:0,rootMargin:'120px 0px'}).observe(conceptHelixStage);
+    const mobileVideos = new IntersectionObserver((entries) => {
+      if (!compact.matches || reduced.matches || document.hidden) return;
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.play().catch(() => {});
+        else entry.target.pause();
+      });
+    }, {threshold:0.15,rootMargin:'100px 0px'});
+    cards.filter(({type}) => type === 'video').forEach(({item}) => mobileVideos.observe(item));
+  } else { active = true; update(); }
+}
