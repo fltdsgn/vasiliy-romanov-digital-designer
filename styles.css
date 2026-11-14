@@ -317,6 +317,13 @@
 
 @media(min-width:901px) and (max-width:1366px){
   .hero{min-height:560px;padding:clamp(56px,7vh,72px) 24px 40px}
+  .footer{gap:24px;padding:48px var(--gutter) 20px}
+  .footer__top{flex-basis:clamp(420px,37vw,506px);padding-bottom:20px}
+  .footer__contact{width:min(620px,100%);gap:18px}
+  .footer__contact h2{font-size:clamp(40px,3.5vw,48px)}
+  .footer__contact>p{font-size:clamp(16px,1.4vw,19px)}
+  .footer__actions a{min-height:64px;padding:18px 24px}
+  .footer__name{font-size:clamp(70px,9.5vw,130px)}
 }
 
 @media(min-width:601px) and (max-width:1366px){

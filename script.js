@@ -115,6 +115,7 @@ if ('IntersectionObserver' in window && !prefersReducedMotion.matches) {
   };
   revealWords(document.querySelector('.portfolio__heading h2'), 80, 58, 'portfolio__word');
   revealWords(document.querySelector('.approach h2'), 80, 68, 'approach__word');
+  revealWords(document.querySelector('.tefs-outcome__copy h2'), 80, 58, 'portfolio__word');
   if (showreelSection) {
     showreelSection.dataset.scrollReveal = '';
     showreelSection.style.setProperty('--scroll-reveal-delay', '200ms');
@@ -385,6 +386,50 @@ if (window.lottie && downloadLink && downloadTile && downloadAnimationContainer)
       downloadAnimation.goToAndStop(0, true);
     }
   });
+}
+
+const tefsExternalLinks = [...document.querySelectorAll('[data-tefs-external-link]')];
+if (window.lottie && tefsExternalLinks.length) {
+  tefsExternalLinks.forEach((icon) => {
+    const anchor = icon.closest('a');
+    if (!anchor) return;
+    const animation = window.lottie.loadAnimation({
+      container: icon,
+      renderer: 'svg',
+      loop: false,
+      autoplay: false,
+      path: 'https://useanimations.com/icons/external-link.json',
+    });
+    const playAnimation = () => {
+      if (!prefersReducedMotion.matches && animation.isPaused) {
+        animation.playSegments([0, animation.totalFrames], true);
+      }
+    };
+    anchor.addEventListener('mouseenter', playAnimation);
+    anchor.addEventListener('focus', playAnimation);
+  });
+}
+
+const tefsMotionVideo = document.querySelector('[data-tefs-motion-video]');
+if (tefsMotionVideo) {
+  const tefsMotionFrame = tefsMotionVideo.closest('.tefs-webpages__challenge') || tefsMotionVideo;
+  const startTefsMotion = () => {
+    if (!tefsMotionVideo.src) {
+      tefsMotionVideo.src = tefsMotionVideo.dataset.src;
+      tefsMotionVideo.load();
+    }
+    if (!prefersReducedMotion.matches) tefsMotionVideo.play().catch(() => {});
+  };
+  const frameRect = tefsMotionFrame.getBoundingClientRect();
+  if (frameRect.top < window.innerHeight + 240 && frameRect.bottom > -240) startTefsMotion();
+  if ('IntersectionObserver' in window) {
+    const tefsMotionObserver = new IntersectionObserver(([entry], observer) => {
+      if (!entry.isIntersecting) return;
+      startTefsMotion();
+      observer.disconnect();
+    }, { rootMargin: '240px 0px' });
+    tefsMotionObserver.observe(tefsMotionFrame);
+  } else startTefsMotion();
 }
 
 let previousScrollY = window.scrollY;
@@ -1153,4 +1198,101 @@ if (conceptHelixStage) {
       else { if (frame) cancelAnimationFrame(frame); frame = 0; pauseVideos(); }
     }, {threshold:0,rootMargin:'120px 0px'}).observe(conceptHelixStage);
   } else { active = true; update(); }
+}
+
+const tefsCampaignTimeline = document.querySelector('[data-tefs-timeline]');
+if (tefsCampaignTimeline) {
+  const stages = [...tefsCampaignTimeline.querySelectorAll('.tefs-creatives__stage')];
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let enteredAt = 0;
+  let timer = 0;
+  let visible = false;
+
+  const updateCampaignTimeline = () => {
+    const elapsed = reducedMotion.matches || !enteredAt ? 0 : performance.now() - enteredAt;
+    const activeIndex = 9 + Math.min(8, Math.floor((elapsed % 21600) / 2400));
+    stages.forEach((stage, index) => {
+      const distance = Math.abs(index - activeIndex);
+      const opacity = [1, .32, .18, .09, .035][distance] ?? 0;
+      stage.style.opacity = String(opacity);
+    });
+  };
+
+  const setTimelineVisible = (isVisible) => {
+    visible = isVisible;
+    tefsCampaignTimeline.classList.toggle('is-active', visible && !reducedMotion.matches);
+    if (visible) {
+      if (!enteredAt) enteredAt = performance.now();
+      updateCampaignTimeline();
+      if (!reducedMotion.matches && !timer) timer = window.setInterval(updateCampaignTimeline, 120);
+    }
+    if ((!visible || reducedMotion.matches) && timer) {
+      window.clearInterval(timer);
+      timer = 0;
+    }
+  };
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => setTimelineVisible(entry.isIntersecting), { threshold: .05 }).observe(tefsCampaignTimeline);
+  } else setTimelineVisible(true);
+  reducedMotion.addEventListener?.('change', () => setTimelineVisible(visible));
+}
+
+const tefsPage = document.querySelector('.tefs-page');
+if (tefsPage && !prefersReducedMotion.matches && 'IntersectionObserver' in window) {
+  const tefsHero = tefsPage.querySelector('.tefs-hero');
+  const tefsRevealGroups = [
+    ['.tefs-overview > h2', 0],
+    ['.tefs-facts > div', 90],
+    ['.tefs-contribution > h3, .tefs-contribution > ol > li', 90],
+    ['.tefs-outcome__copy', 0],
+    ['.tefs-webpages .tefs-section__heading', 0],
+    ['.tefs-webpages__grid > *', 100],
+    ['.tefs-metrics__artwork, .tefs-metrics__number, .tefs-metrics__caption', 90],
+    ['.tefs-mobile-pages__screen', 75],
+    ['.tefs-creatives .tefs-section__heading', 0],
+    ['.tefs-creatives__feature-row > *', 100],
+    ['.tefs-creatives__showcase', 180],
+    ['.tefs-reflection > p, .tefs-reflection h2, .tefs-reflection .tefs-outcome__actions', 100],
+    ['.tefs-page .x5-related__heading, .tefs-page .x5-related__grid', 120],
+  ];
+
+  const revealTargets = [];
+  tefsRevealGroups.forEach(([selector, delayStep]) => {
+    tefsPage.querySelectorAll(selector).forEach((element, index) => {
+      element.dataset.tefsReveal = '';
+      element.style.setProperty('--tefs-reveal-delay', `${Math.min(index, 5) * delayStep}ms`);
+      revealTargets.push(element);
+    });
+  });
+
+  if (tefsHero) {
+    requestAnimationFrame(() => requestAnimationFrame(() => tefsHero.classList.add('is-entered')));
+    const browser = tefsHero.querySelector('.tefs-hero__browser');
+    let frame = 0;
+    const updateHeroScreen = () => {
+      frame = 0;
+      if (!browser) return;
+      const bounds = tefsHero.getBoundingClientRect();
+      const scrollDistance = Math.max(0, -bounds.top - 160);
+      const progress = Math.max(0, Math.min(1, scrollDistance / 480));
+      browser.style.setProperty('--tefs-browser-y', `${progress * 72}px`);
+      browser.style.setProperty('--tefs-browser-rotate', `${16 * (1 - progress)}deg`);
+    };
+    const requestHeroUpdate = () => {
+      if (!frame) frame = requestAnimationFrame(updateHeroScreen);
+    };
+    window.addEventListener('scroll', requestHeroUpdate, { passive: true });
+    window.addEventListener('resize', requestHeroUpdate, { passive: true });
+    requestHeroUpdate();
+  }
+
+  const tefsRevealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: .1, rootMargin: '0px 0px -5% 0px' });
+  revealTargets.forEach(element => tefsRevealObserver.observe(element));
 }

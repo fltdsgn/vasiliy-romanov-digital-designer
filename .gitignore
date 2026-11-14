@@ -2,6 +2,7 @@
 assets/**/*.mp4
 !assets/video/showreel.mp4
 !assets/video/showreel-teaser.mp4
+!assets/video/Video _ Challenges · Scroll animation · 10s.mp4
 assets/**/*.jpg
 assets/**/*.jpeg
 assets/**/*.png
