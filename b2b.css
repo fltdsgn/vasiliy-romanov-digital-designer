@@ -1,0 +1,240 @@
+.b2b-page{--b2b-blue:#19affd;--b2b-gutter:clamp(24px,3.23vw,62px);background:var(--x5-paper)}
+.b2b-page .portfolio__word{display:inline-block}
+.b2b-page main{overflow:clip}
+@media(min-width:1001px){
+ .b2b-project-intro h2{font-size:clamp(54px,3.75vw,72px)}
+ .b2b-page .x5-related__heading h2{font-size:72px}
+}
+.b2b-hero{position:relative;isolation:isolate;width:100%;height:min(100svh,1200px);min-height:820px;margin:0;overflow:hidden;border-radius:0 0 44px 44px;background:var(--b2b-blue);color:#fff}
+.b2b-hero__wordmark,.b2b-hero__art,.b2b-hero__foodtech{position:absolute;display:block;height:auto;max-width:none;object-fit:contain;pointer-events:none}
+.b2b-hero__wordmark{top:12.2%;left:50%;z-index:1;width:61%;transform:translateX(-50%)}
+.b2b-page .b2b-hero__art-layer[data-parallax]{position:absolute;bottom:0;left:50%;z-index:2;width:89.4%;transform:translate3d(-50%,var(--parallax-offset,0px),0) scale(1.06);transform-origin:center bottom;will-change:transform}
+.b2b-hero__art{position:relative;width:100%;transform:none}
+.b2b-hero__foodtech{bottom:2.4%;left:3.2%;z-index:3;width:94.1%}
+.b2b-hero__tags{position:absolute;top:10.6%;left:50%;z-index:10;justify-content:center;transform:translateX(-50%)}
+.b2b-hero__tags span{background:rgba(255,255,255,.14);color:#fff}
+.x5-reveal-enabled .b2b-hero [data-hero-step]{opacity:0;transition:opacity .72s cubic-bezier(.22,1,.36,1),transform .72s cubic-bezier(.22,1,.36,1);will-change:opacity,transform}
+.x5-reveal-enabled .b2b-hero .b2b-hero__wordmark[data-hero-step]{transform:translate3d(-50%,24px,0)}
+.x5-reveal-enabled .b2b-hero .b2b-hero__art[data-hero-step]{transform:translate3d(0,24px,0) scale(.98)}
+.x5-reveal-enabled .b2b-hero .b2b-hero__foodtech[data-hero-step]{transform:translate3d(0,24px,0)}
+.x5-reveal-enabled .b2b-hero [data-hero-step="title"]{transition-delay:180ms}
+.x5-reveal-enabled .b2b-hero [data-hero-step="tags"]{transition-delay:0ms}
+.x5-reveal-enabled .b2b-hero [data-hero-step="description"]{transition-delay:380ms}
+.x5-reveal-enabled .b2b-hero [data-hero-step="details"]{transition-delay:620ms}
+.x5-reveal-enabled .b2b-hero.is-entered .b2b-hero__wordmark[data-hero-step]{opacity:1;transform:translate3d(-50%,0,0);will-change:auto}
+.x5-reveal-enabled .b2b-hero.is-entered .b2b-hero__art[data-hero-step]{opacity:1;transform:translate3d(0,0,0) scale(1);will-change:auto}
+.x5-reveal-enabled .b2b-hero.is-entered .b2b-hero__foodtech[data-hero-step]{opacity:1;transform:translate3d(0,0,0);will-change:auto}
+.x5-reveal-enabled .b2b-hero.is-entered .b2b-hero__tags[data-hero-step]{opacity:1;will-change:auto}
+html.has-hero-entrance .b2b-project-intro.is-visible .portfolio__word,html.has-hero-entrance .b2b-outcome__copy.is-visible .portfolio__word{opacity:1;filter:blur(0);transform:translate3d(0,0,0)}
+.b2b-outcome{position:relative;aspect-ratio:1902/1636;min-height:680px;margin:0 8px;overflow:hidden;border-radius:44px;background:#dbd8d1;color:#161a20}
+.b2b-outcome__picture{position:absolute;inset:0;display:block}
+.b2b-outcome__art{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover}
+.b2b-outcome__copy{position:absolute;right:3%;bottom:8%;left:50%;z-index:1;max-width:893px}
+.b2b-outcome__copy .x5-kicker{margin-bottom:16px;color:#fff}
+.b2b-outcome__copy h2{margin:0;color:#fff;font-size:clamp(32px,2.92vw,56px);font-weight:500;line-height:1.17;letter-spacing:-.025em}
+.b2b-outcome__copy h2 .b2b-outcome__muted{color:rgba(255,255,255,.5)}
+.b2b-project-intro{display:flex;max-width:none;flex-direction:column;align-items:flex-start;gap:24px;padding-top:150px;padding-bottom:56px}
+.b2b-project-intro .x5-kicker{color:#195dcc;font-size:16px}
+.b2b-project-intro h2{max-width:1500px;margin:0;font-size:clamp(54px,5vw,96px);font-weight:500;line-height:.98;letter-spacing:-.045em}
+.b2b-project-intro .x5-section__intro{max-width:1100px}
+.b2b-ink{color:var(--x5-ink)}
+.b2b-image-section{display:block;width:calc(100% - 16px);margin:0 auto 24px;overflow:hidden;border-radius:44px;background:transparent}
+.b2b-image-section img,.b2b-image-section video{display:block;width:100%;height:auto;max-width:none;object-fit:contain}
+.b2b-image-section--matching video{max-height:884px;aspect-ratio:1740/884;object-fit:cover}
+.b2b-image-section__open-video{display:none}
+.b2b-image-section + .b2b-project-intro{padding-top:150px}
+.b2b-image-section--assortment{margin-top:0}
+.b2b-project-intro--prices,.b2b-project-intro--assortment{padding-top:150px}
+.b2b-project-intro--prices{padding-bottom:75px}
+.b2b-price-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;width:calc(100% - 16px);margin:0 auto 150px}
+.b2b-price-card{position:relative;min-width:0;aspect-ratio:886/580;margin:0;overflow:hidden;border-radius:24px;background:#e5e4e2}
+.b2b-price-card figcaption{position:absolute;top:6.56%;left:4.97%;z-index:1;max-width:90%;color:var(--x5-ink);font-size:clamp(18px,1.25vw,24px);line-height:1.19;letter-spacing:-.02em}
+.b2b-price-card img{position:absolute;top:18.2%;left:8.01%;display:block;width:83.98%;height:auto;border:0;border-radius:0;background:transparent;object-fit:contain}
+.b2b-project-intro--assortment{padding-bottom:75px}
+.b2b-assortment-gallery .x5-widget-gallery__item{aspect-ratio:2448/1483;overflow:hidden;border-radius:16px;background:transparent}
+.b2b-assortment-gallery .x5-widget-gallery__item img{border-radius:inherit}
+.b2b-assortment-gallery{width:calc(100% - 16px);margin:0 auto}
+.b2b-page .x5-reflection{padding-top:100px;padding-bottom:100px}
+.b2b-page .x5-reflection>p:last-child{color:#161a20}
+.b2b-page .x5-reflection>p:last-child .portfolio__word{color:#161a20}
+.b2b-page .x5-reflection>p:last-child>span,
+.b2b-page .x5-reflection>p:last-child>span .portfolio__word{color:rgba(22,26,32,.5)}
+.b2b-page .x5-related{margin-top:0}
+.b2b-page .x5-fact h3{font-weight:600}
+.b2b-page .x5-fact p,.b2b-page .x5-brief ol{font-weight:400}
+@media(min-width:1001px){
+ .b2b-price-grid{margin-bottom:0}
+}
+@media(max-width:1000px){
+ .b2b-hero{min-height:720px;height:92svh}
+ .b2b-hero__wordmark{top:18%;width:72%}
+ .b2b-page .b2b-hero__art-layer[data-parallax]{bottom:0;width:98%}
+ .b2b-hero__foodtech{bottom:5%;left:4%;width:92%}
+ .b2b-hero__tags{top:13%}
+ .b2b-outcome{display:flex;min-height:0;height:auto;aspect-ratio:auto;flex-direction:column;background:#0a2d4b}
+ .b2b-outcome__picture{position:relative;inset:auto;display:block;width:100%;height:auto;flex:none}
+ .b2b-outcome__art{position:relative;inset:auto;display:block;width:100%;height:auto;max-height:58vw;aspect-ratio:1.25/1;object-fit:cover;object-position:center}
+ .b2b-outcome__copy{position:relative;inset:auto;max-width:none;padding:24px 5% 40px;background:#0a2d4b;text-align:left}
+ .b2b-outcome__copy h2{font-size:clamp(22px,3.5vw,34px)}
+ .b2b-project-intro{padding-top:70px;padding-bottom:39px}
+ .b2b-project-intro--assortment{padding-bottom:40px}
+ .b2b-image-section + .b2b-project-intro{padding-top:70px}
+ .b2b-project-intro--prices{padding-bottom:70px}
+ .b2b-image-section--assortment{margin-top:70px}
+ .b2b-price-grid{gap:16px}
+ .b2b-price-card{border-radius:20px}
+}
+@media(min-width:601px) and (max-width:1024px){
+ .b2b-hero{min-height:0;height:65svh}
+ .b2b-page .b2b-hero__art-layer[data-parallax]{transform:translate3d(-50%,var(--parallax-offset,0px),0) scale(1.378)}
+}
+@media(min-width:500px) and (max-width:1000px){
+ .b2b-price-grid{grid-template-columns:1fr;margin-bottom:0}
+ .b2b-project-intro--assortment{padding-top:56px}
+}
+@media(max-width:600px){
+ .b2b-hero{width:100%;height:80svh;min-height:620px;border-radius:0 0 24px 24px}
+ .b2b-hero__wordmark{top:22%;width:84%}
+ .b2b-page .b2b-hero__art-layer[data-parallax]{bottom:0;width:116%;transform:translate3d(-50%,var(--parallax-offset,0px),0) scale(1)}
+ .b2b-hero__foodtech{bottom:8%;left:4%;width:92%}
+ .b2b-hero__tags{top:13%;width:max-content;max-width:calc(100% - 24px)}
+ .b2b-hero__tags span{padding:7px 9px;border-radius:10px;font-size:11px}
+ .b2b-outcome{display:flex;height:auto;min-height:0;aspect-ratio:auto;flex-direction:column;margin:0;border-radius:24px}
+ .b2b-outcome__picture{position:relative;inset:auto;display:block;width:100%;height:auto}
+ .b2b-outcome__art{position:relative;inset:auto;width:100%;height:auto;max-height:none;aspect-ratio:1.16;object-fit:cover;object-position:center top}
+ .b2b-outcome__copy{position:relative;inset:auto;max-width:none;padding:0 24px 36px;background:#000}
+ .b2b-outcome__copy .x5-kicker{margin-bottom:12px;font-size:16px}
+ .b2b-outcome__copy h2{font-size:28px;line-height:1.15}
+ .b2b-project-intro{gap:16px;padding:56px 20px 32px}
+ .b2b-project-intro--assortment{padding-bottom:40px}
+ .b2b-image-section + .b2b-project-intro{padding-top:56px}
+ .b2b-project-intro .x5-kicker{font-size:14px}
+ .b2b-project-intro h2{font-size:44px;line-height:1.02}
+ .b2b-project-intro .x5-section__intro{font-size:16px;line-height:1.35}
+ .b2b-image-section{width:calc(100% - 16px);margin:0 auto 16px;border-radius:24px}
+ .b2b-image-section--matching{position:relative}
+ .b2b-image-section--matching video{width:635px;height:326px;max-height:none;aspect-ratio:635/326;object-fit:cover}
+ .b2b-image-section__open-video{position:absolute;top:50%;left:50%;z-index:2;display:grid;width:64px;height:64px;place-items:center;padding:0;transform:translate(-50%,-50%);border:1px solid rgba(255,255,255,.52);border-radius:50%;background:rgba(15,16,22,.56);color:#fff;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+ .b2b-image-section__open-video svg{width:30px;height:30px;margin-left:3px}
+ .b2b-video-dialog:not([open]){display:none}
+ .b2b-video-dialog[open]{position:fixed;inset:0;display:grid;width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;place-items:center;margin:0;padding:54px 12px 18px;overflow:hidden;border:0;background:transparent;color:#fff}
+ .b2b-video-dialog::backdrop{background:rgba(8,9,15,.96);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+ .b2b-video-dialog video{display:block;width:min(100%,1600px);max-height:calc(100dvh - 84px);object-fit:contain;background:#08090f}
+ .b2b-video-dialog__close{position:absolute;top:12px;right:12px;z-index:1;display:grid;width:40px;height:40px;place-items:center;padding:0;border:1px solid rgba(255,255,255,.5);border-radius:50%;background:rgba(15,16,22,.5);color:#fff;font:300 30px/1 'TT Interfaces',Arial,sans-serif;cursor:pointer}
+ .b2b-price-card img{cursor:zoom-in}
+ .b2b-image-dialog:not([open]){display:none}
+ .b2b-image-dialog[open]{position:fixed;inset:0;display:grid;width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;place-items:center;margin:0;padding:56px 12px 20px;overflow:hidden;border:0;background:transparent;color:#fff}
+ .b2b-image-dialog::backdrop{background:rgba(8,9,15,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+ .b2b-image-dialog img{display:block;width:min(100%,1000px);max-height:calc(100dvh - 92px);object-fit:contain}
+ .b2b-image-dialog__close{position:absolute;top:12px;right:12px;z-index:1;display:grid;width:40px;height:40px;place-items:center;padding:0;border:1px solid rgba(255,255,255,.5);border-radius:50%;background:rgba(15,16,22,.5);color:#fff;font:300 30px/1 'TT Interfaces',Arial,sans-serif;cursor:pointer}
+ .b2b-image-section--assortment{margin-top:48px}
+ .b2b-price-grid{grid-template-columns:1fr;gap:16px;width:calc(100% - 16px);margin-bottom:0}
+ .b2b-price-card{aspect-ratio:1.3/1;border-radius:18px}
+ .b2b-price-card figcaption{top:8%;left:7%;max-width:86%;font-size:16px}
+ .b2b-price-card img{top:23%;left:7%;width:86%}
+ .b2b-project-intro--prices,.b2b-project-intro--assortment{padding-top:56px}
+ .b2b-project-intro--prices{padding-bottom:24px}
+  .b2b-assortment-gallery{width:100%;margin:32px 0 0}
+ .b2b-assortment-gallery .x5-widget-gallery__panel{width:100%;margin-left:0}
+}
+
+@media(min-width:601px) and (max-width:800px){
+ .b2b-image-section--matching video{width:162vw;height:auto;max-height:none;aspect-ratio:635/326;object-fit:cover}
+}
+
+@media(min-width:601px) and (max-width:1000px){
+ .b2b-outcome{background:#0b3f63}
+ .b2b-outcome__picture{position:relative;background:#0b3f63}
+ .b2b-outcome__picture::after{position:absolute;right:0;bottom:0;left:0;height:24%;background:linear-gradient(to bottom,rgba(11,63,99,0),#0b3f63);content:"";pointer-events:none}
+ .b2b-outcome__art{object-position:center top}
+ .b2b-outcome__copy{background:#0b3f63}
+}
+@media(min-width:601px) and (max-width:1024px){
+ .b2b-project-intro h2,.b2b-page .x5-related__heading h2{font-size:clamp(42px,6.25vw,64px);font-weight:600;line-height:1}
+}
+@media(min-width:500px) and (max-width:1000px){
+ .b2b-image-section--matching video{width:100%;height:auto;max-height:none;aspect-ratio:auto;object-fit:contain}
+}
+
+/* Mobile composition: match the dedicated narrow layout without changing the
+   desktop and tablet case sections. */
+@media(max-width:600px){
+ .b2b-hero{
+  height:auto;
+  min-height:0;
+  aspect-ratio:393/629;
+ }
+ .b2b-page .b2b-hero__wordmark{
+  top:104px;
+  width:min(114.5vw,450px);
+  max-width:none;
+ }
+ .b2b-page .b2b-hero__art-layer[data-parallax]{
+  inset:0;
+  bottom:auto;
+  left:0;
+  width:100%;
+  height:100%;
+  transform:none;
+  overflow:visible;
+ }
+ .b2b-page .b2b-hero__art{
+  position:absolute;
+  top:30.55%;
+  left:-61.23%;
+  width:215.22%;
+  height:75.65%;
+  max-width:none;
+  object-fit:contain;
+ }
+ .b2b-hero__foodtech{
+  bottom:26px;
+  left:16px;
+  width:calc(100% - 32px);
+ }
+ .b2b-hero__tags{top:74px}
+ .b2b-hero__tags span:nth-child(3){display:none}
+
+ .b2b-outcome{
+  background:#0a2d4b;
+ }
+ .b2b-outcome__art{
+  aspect-ratio:393/338;
+  object-fit:cover;
+  object-position:center top;
+  transform:translateY(-4px) scale(1.02);
+  transform-origin:center top;
+  -webkit-mask-image:linear-gradient(to bottom,#000 67.45%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 67.45%,transparent 100%);
+ }
+ .b2b-outcome__copy{background:#0a2d4b}
+
+ .b2b-image-section--prices,
+ .b2b-image-section--assortment{
+  position:relative;
+  width:100%;
+  height:auto;
+  aspect-ratio:1;
+  margin-right:0;
+  margin-left:0;
+  overflow:hidden;
+  border-radius:24px;
+  background:#08090b;
+ }
+ .b2b-image-section--prices img,
+ .b2b-image-section--assortment img{
+  position:absolute;
+  top:0;
+  height:100%;
+  max-width:none;
+  object-fit:cover;
+ }
+ .b2b-image-section--prices img{
+  left:-23.1%;
+  width:177.01%;
+ }
+ .b2b-image-section--assortment img{
+  left:-28.54%;
+  width:186.32%;
+ }
+}

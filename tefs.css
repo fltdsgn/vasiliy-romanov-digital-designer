@@ -442,3 +442,11 @@ html.has-hero-entrance .tefs-outcome__copy.is-visible .portfolio__word{opacity:1
   .tefs-page .x5-related__grid a>span{gap:8px;font-size:20px;line-height:1.1}
   .tefs-page .x5-related__grid b,.tefs-page .x5-related__grid small{font-size:20px}
 }
+@media(min-width:601px) and (max-width:1000px){
+  .tefs-page .x5-related__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+  .tefs-page .x5-related__grid a{width:auto;height:auto;gap:14px;justify-self:stretch}
+  .tefs-page .x5-related__media{aspect-ratio:1.35;flex:none;border-radius:20px}
+}
+@media(min-width:601px) and (max-width:1024px){
+  .tefs-overview>h2,.tefs-section__heading h2,.tefs-page .x5-related__heading h2{font-size:clamp(42px,6.25vw,64px);font-weight:600;line-height:1}
+}

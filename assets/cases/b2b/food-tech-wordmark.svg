@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1807 226">
+  <defs>
+    <filter id="remove-blue-background" x="-1%" y="-5%" width="102%" height="110%" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="0 0 0 0 0.004 0 0 0 0 0.212 0 0 0 0 0.424 0 0 -1.76 0 1.745"/>
+    </filter>
+  </defs>
+  <image href="food-tech-wordmark.png" width="1807" height="226" filter="url(#remove-blue-background)"/>
+</svg>

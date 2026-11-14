@@ -30,6 +30,9 @@ document.fonts?.ready.then(syncHoverPillTickerSpeed);
 window.addEventListener('resize', syncHoverPillTickerSpeed, { passive: true });
 
 const topbar = document.querySelector('.topbar');
+const caseHeaderHero = topbar?.classList.contains('x5-topbar')
+  ? document.querySelector('.x5-hero, .b2b-hero')
+  : null;
 const desktopResumeLabel = document.querySelector('.topbar__cv .topbar__link-label span:last-child');
 const topbarResumeLink = document.querySelector('.topbar__cv');
 if (desktopResumeLabel) desktopResumeLabel.textContent = 'резюме';
@@ -165,6 +168,90 @@ if ('IntersectionObserver' in window && !prefersReducedMotion.matches) {
       revealShowreelWhenReady();
     }, descriptionStartDelay);
   }));
+}
+
+const b2bPreviewVideo = document.querySelector('[data-b2b-video-preview]');
+const b2bVideoDialog = document.querySelector('[data-b2b-video-dialog]');
+const b2bDialogVideo = b2bVideoDialog?.querySelector('video');
+const b2bMobileVideoQuery = window.matchMedia('(max-width: 600px)');
+
+if (b2bPreviewVideo && b2bVideoDialog && b2bDialogVideo) {
+  const updateB2bVideoTrigger = () => {
+    if (b2bMobileVideoQuery.matches) {
+      b2bPreviewVideo.tabIndex = 0;
+      b2bPreviewVideo.setAttribute('role', 'button');
+      b2bPreviewVideo.setAttribute('aria-haspopup', 'dialog');
+    } else {
+      b2bPreviewVideo.removeAttribute('tabindex');
+      b2bPreviewVideo.removeAttribute('role');
+      b2bPreviewVideo.removeAttribute('aria-haspopup');
+    }
+  };
+
+  const openB2bVideo = () => {
+    if (!b2bMobileVideoQuery.matches || b2bVideoDialog.open) return;
+    b2bPreviewVideo.pause();
+    b2bDialogVideo.src = b2bPreviewVideo.currentSrc || b2bPreviewVideo.src;
+    b2bDialogVideo.poster = b2bPreviewVideo.poster;
+    b2bVideoDialog.showModal();
+    b2bDialogVideo.currentTime = b2bPreviewVideo.currentTime || 0;
+    b2bDialogVideo.play().catch(() => {});
+  };
+
+  const closeB2bVideo = () => {
+    if (b2bVideoDialog.open) b2bVideoDialog.close();
+  };
+
+  updateB2bVideoTrigger();
+  b2bMobileVideoQuery.addEventListener?.('change', updateB2bVideoTrigger);
+  b2bPreviewVideo.addEventListener('click', openB2bVideo);
+  b2bVideoDialog.closest('body')?.querySelector('[data-b2b-video-open]')?.addEventListener('click', openB2bVideo);
+  b2bPreviewVideo.addEventListener('keydown', event => {
+    if (!b2bMobileVideoQuery.matches || (event.key !== 'Enter' && event.key !== ' ')) return;
+    event.preventDefault();
+    openB2bVideo();
+  });
+  b2bVideoDialog.querySelector('[data-b2b-video-close]')?.addEventListener('click', closeB2bVideo);
+  b2bVideoDialog.addEventListener('click', event => {
+    if (event.target === b2bVideoDialog) closeB2bVideo();
+  });
+  b2bVideoDialog.addEventListener('close', () => {
+    b2bDialogVideo.pause();
+    b2bDialogVideo.removeAttribute('src');
+    b2bDialogVideo.load();
+    if (b2bMobileVideoQuery.matches) b2bPreviewVideo.play().catch(() => {});
+  });
+}
+
+const b2bPriceImages = document.querySelectorAll('.b2b-price-card img');
+const b2bImageDialog = document.querySelector('[data-b2b-image-dialog]');
+const b2bDialogImage = b2bImageDialog?.querySelector('[data-b2b-image-dialog-img]');
+
+if (b2bPriceImages.length && b2bImageDialog && b2bDialogImage) {
+  const openB2bPriceImage = image => {
+    if (!b2bMobileVideoQuery.matches || b2bImageDialog.open) return;
+    b2bDialogImage.src = image.currentSrc || image.src;
+    b2bDialogImage.alt = image.alt;
+    b2bImageDialog.showModal();
+  };
+
+  b2bPriceImages.forEach(image => {
+    image.tabIndex = 0;
+    image.setAttribute('role', 'button');
+    image.setAttribute('aria-haspopup', 'dialog');
+    image.addEventListener('click', () => openB2bPriceImage(image));
+    image.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      openB2bPriceImage(image);
+    });
+  });
+
+  b2bImageDialog.querySelector('[data-b2b-image-close]')?.addEventListener('click', () => b2bImageDialog.close());
+  b2bImageDialog.addEventListener('click', event => {
+    if (event.target === b2bImageDialog) b2bImageDialog.close();
+  });
+  b2bImageDialog.addEventListener('close', () => b2bDialogImage.removeAttribute('src'));
 }
 
 const archiveShowAllButton = document.querySelector('[data-archive-show-all]');
@@ -435,6 +522,20 @@ if (tefsMotionVideo) {
 let previousScrollY = window.scrollY;
 let scrollFramePending = false;
 
+topbar?.classList.toggle('is-scrolled', previousScrollY > 24);
+
+const syncCaseTopbarVisibility = (scrollY) => {
+  if (!caseHeaderHero || !topbar?.classList.contains('x5-topbar')) return false;
+  const heroBottom = caseHeaderHero.getBoundingClientRect().bottom + scrollY;
+  const active = scrollY >= heroBottom - 1;
+  topbar.classList.toggle('is-active', active);
+  if (!active) topbar.classList.remove('is-hidden');
+  return active;
+};
+
+syncCaseTopbarVisibility(previousScrollY);
+window.addEventListener('resize', () => syncCaseTopbarVisibility(window.scrollY), { passive: true });
+
 window.addEventListener('scroll', () => {
   if (scrollFramePending) return;
   scrollFramePending = true;
@@ -442,8 +543,16 @@ window.addEventListener('scroll', () => {
   window.requestAnimationFrame(() => {
     const currentScrollY = window.scrollY;
     const scrollDelta = currentScrollY - previousScrollY;
+    const wasCaseHeaderActive = topbar?.classList.contains('is-active') ?? false;
+    const isCaseHeaderActive = syncCaseTopbarVisibility(currentScrollY);
 
-    if (currentScrollY < 80 || scrollDelta < -6) {
+    topbar?.classList.toggle('is-scrolled', currentScrollY > 24);
+
+    if (caseHeaderHero && !isCaseHeaderActive) {
+      topbar?.classList.remove('is-hidden');
+    } else if (caseHeaderHero && !wasCaseHeaderActive && isCaseHeaderActive) {
+      topbar?.classList.remove('is-hidden');
+    } else if (currentScrollY < 80 || scrollDelta < -6) {
       topbar?.classList.remove('is-hidden');
     } else if (scrollDelta > 6) {
       topbar?.classList.add('is-hidden');

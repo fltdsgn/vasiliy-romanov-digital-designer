@@ -1,5 +1,5 @@
 (() => {
-  const hero = document.querySelector('.x5-hero');
+  const hero = document.querySelector('.x5-hero, .b2b-hero');
   if (hero && document.documentElement.classList.contains('x5-reveal-enabled')) {
     requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.add('is-entered')));
   }
