@@ -42,9 +42,9 @@
 .x5-tags{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:0}
 .x5-tags span{padding:10px 15px;border:0;border-radius:16px;background:rgba(255,255,255,.1);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font-size:16px;white-space:nowrap}
 .x5-scroll{position:absolute;right:var(--x5-gutter);bottom:72px;z-index:2;display:grid;width:clamp(55px,4.0625vw,78px);height:clamp(55px,4.0625vw,78px);place-items:center;border:3px solid #fff;border-radius:50%;transition:transform .25s ease;animation:x5-scroll-invite 1.5s ease-in-out infinite}
-.x5-scroll img{width:60%;height:60%;object-fit:contain;transform:rotate(180deg)}
+.x5-scroll svg{width:60%;height:60%;transform:rotate(180deg)}
 .x5-scroll:hover,.x5-scroll:focus-visible{transform:scale(1.035)}
-.x5-scroll:hover img,.x5-scroll:focus-visible img{animation:x5-scroll-arrow-hover .58s cubic-bezier(.22,.8,.32,1)}
+.x5-scroll:hover svg,.x5-scroll:focus-visible svg{animation:x5-scroll-arrow-hover .58s cubic-bezier(.22,.8,.32,1)}
 @keyframes x5-scroll-invite{0%,100%{translate:0 0}50%{translate:0 8px}}
 @keyframes x5-scroll-arrow-hover{0%,100%{transform:rotate(180deg) translateY(0);opacity:1}36%{transform:rotate(180deg) translateY(-16%);opacity:0}37%{transform:rotate(180deg) translateY(16%);opacity:0}72%{transform:rotate(180deg) translateY(0);opacity:1}}
 .x5-kicker{margin:0;color:var(--x5-muted);font-size:20px;font-weight:400;line-height:1.2;letter-spacing:-.02em}
@@ -108,8 +108,10 @@ html.has-hero-entrance .x5-outcome__copy.is-visible .portfolio__word,html.has-he
 .x5-demo video{display:block;width:100%;height:auto;max-height:884px;aspect-ratio:1740/884;object-fit:cover;border-radius:0}
 .x5-reflection{display:flex;min-height:0;flex-direction:column;align-items:center;justify-content:flex-start;gap:12px;padding-top:56px;padding-bottom:96px;background:var(--x5-paper);text-align:center}
 .x5-reflection .x5-kicker{font-size:20px}
-.x5-reflection>p:last-child{width:min(1278px,100%);margin:0;font-size:clamp(38px,3.23vw,62px);font-weight:500;line-height:1.17;letter-spacing:-.01em}
-.x5-reflection>p:last-child>span{color:rgba(22,26,32,.5)}
+.x5-page .x5-reflection>p:last-child{width:min(1278px,100%);margin:0;color:#161a20;font-size:clamp(38px,3.23vw,62px);font-weight:500;line-height:1.17;letter-spacing:-.01em}
+.x5-page .x5-reflection>p:last-child .portfolio__word{color:#161a20}
+.x5-page .x5-reflection>p:last-child>span,
+.x5-page .x5-reflection>p:last-child>span .portfolio__word{color:rgba(22,26,32,.5)}
 .x5-related{display:flex;min-height:966px;flex-direction:column;align-items:center;gap:72px;padding-top:150px;padding-bottom:150px;border-radius:44px 44px 0 0;background:#14151d;color:#fff}
 .x5-related__heading{text-align:center}
 .x5-related__heading .x5-kicker{margin-bottom:12px;color:rgba(255,255,255,.65)}
@@ -175,19 +177,19 @@ html.has-hero-entrance .x5-outcome__copy.is-visible .portfolio__word,html.has-he
   .x5-overview>h2{font-size:44px;text-align:left}
   .x5-overview__content{padding-top:0}
   .x5-facts{grid-template-columns:1fr;gap:20px;padding-bottom:32px}
-  .x5-fact h3,.x5-brief h3{margin-bottom:8px;font-size:20px;line-height:1.2}
+  .x5-fact h3,.x5-brief h3{margin-bottom:8px;font-size:20px;font-weight:600;line-height:1.2}
   .x5-fact p,.x5-brief ol{font-size:16px;line-height:1.4}
   .x5-brief{padding-top:0}
   .x5-brief>h3{margin-bottom:12px}
   .x5-brief ol{gap:12px;padding-left:22px}
   .x5-brief ol ol{padding-left:22px}
   .x5-outcome{display:flex;min-height:0;aspect-ratio:auto;flex-direction:column;margin:0;border-radius:24px}
-  .x5-outcome__picture{position:relative;inset:auto;width:100%;aspect-ratio:393/338;flex:none;overflow:hidden}
-  .x5-outcome__image{position:absolute;inset:0;object-fit:cover;object-position:center}
+  .x5-outcome__picture{position:relative;inset:auto;width:100%;aspect-ratio:1.16;flex:none;overflow:hidden}
+  .x5-outcome__image{position:absolute;inset:0;object-fit:cover;object-position:center top}
   .x5-outcome::after{display:none}
-  .x5-outcome__copy{position:relative;inset:auto;max-width:none;padding:48px 48px 112px;background:#000;color:#fff}
-  .x5-outcome__copy .x5-kicker{margin-bottom:24px;font-size:18px}
-  .x5-outcome__copy h2{font-size:36px;line-height:1.17}
+  .x5-outcome__copy{position:relative;inset:auto;max-width:none;padding:0 24px 36px;background:#000;color:#fff}
+  .x5-outcome__copy .x5-kicker{margin-bottom:12px;font-size:16px}
+  .x5-outcome__copy h2{font-size:28px;line-height:1.15}
   .x5-widgets{min-height:0;padding:56px 0}
   .x5-widget-heading{max-width:none;align-items:center;gap:16px;padding:0 16px;text-align:center}
   .x5-widget-heading .x5-kicker,.x5-management__heading .x5-kicker{font-size:14px}
