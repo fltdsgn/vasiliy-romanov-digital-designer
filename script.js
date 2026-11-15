@@ -1,3 +1,11 @@
+document.querySelectorAll('video:not([controls])').forEach((video) => {
+  const host = video.parentElement;
+  if (host && !host.querySelector('[data-showreel-toggle], [data-b2b-video-open]')) {
+    const badgeHost = host.closest('.tefs-webpages__challenge-viewport')?.closest('.tefs-webpages__challenge') || host;
+    badgeHost.classList.add('video-watch-badge-host');
+  }
+});
+
 const bindRussianPrepositions = (root) => {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
@@ -32,6 +40,9 @@ window.addEventListener('resize', syncHoverPillTickerSpeed, { passive: true });
 const topbar = document.querySelector('.topbar');
 const caseHeaderHero = topbar?.classList.contains('x5-topbar')
   ? document.querySelector('.x5-hero, .b2b-hero')
+  : null;
+const tefsHeaderTrigger = topbar?.classList.contains('tefs-topbar')
+  ? document.querySelector('.tefs-overview')
   : null;
 const desktopResumeLabel = document.querySelector('.topbar__cv .topbar__link-label span:last-child');
 const topbarResumeLink = document.querySelector('.topbar__cv');
@@ -524,6 +535,14 @@ let scrollFramePending = false;
 
 topbar?.classList.toggle('is-scrolled', previousScrollY > 24);
 
+const syncTefsHeaderPin = () => {
+  if (!tefsHeaderTrigger || !topbar) return;
+  topbar.classList.toggle('is-pinned', tefsHeaderTrigger.getBoundingClientRect().top <= 0);
+};
+
+syncTefsHeaderPin();
+window.addEventListener('resize', syncTefsHeaderPin, { passive: true });
+
 const syncCaseTopbarVisibility = (scrollY) => {
   if (!caseHeaderHero || !topbar?.classList.contains('x5-topbar')) return false;
   const heroBottom = caseHeaderHero.getBoundingClientRect().bottom + scrollY;
@@ -545,6 +564,7 @@ window.addEventListener('scroll', () => {
     const scrollDelta = currentScrollY - previousScrollY;
     const wasCaseHeaderActive = topbar?.classList.contains('is-active') ?? false;
     const isCaseHeaderActive = syncCaseTopbarVisibility(currentScrollY);
+    syncTefsHeaderPin();
 
     topbar?.classList.toggle('is-scrolled', currentScrollY > 24);
 
@@ -609,13 +629,15 @@ if ('IntersectionObserver' in window && floatingNavSections.length) {
 }
 
 const archiveCards = [...document.querySelectorAll('[data-archive-card]')];
-const desktopArchive = window.matchMedia('(min-width: 901px)');
+const desktopArchive = window.matchMedia('(min-width: 601px)');
+const tabletArchive = window.matchMedia('(min-width: 601px) and (max-width: 800px)');
 const archiveBoard = document.querySelector('.archive__board');
 const archiveWorld = document.querySelector('.archive__universe');
 const archiveTile = document.querySelector('.archive__world');
-const archivePeriodX = 2704;
-const archivePeriodY = 1560;
-const archiveViewStorageKey = 'vasiliy-romanov-portfolio-archive-view-v5';
+const archiveScale = () => tabletArchive.matches ? 0.7 : 1;
+const archivePeriodX = () => 2704 * archiveScale();
+const archivePeriodY = () => 1560 * archiveScale();
+const archiveViewStorageKey = 'vasiliy-romanov-portfolio-archive-view-v6';
 
 const syncArchiveCopies = () => {
   if (!archiveWorld || !archiveTile) return;
@@ -629,8 +651,8 @@ const syncArchiveCopies = () => {
       tileCopy.classList.add('archive__tile--copy');
       tileCopy.setAttribute('aria-hidden', 'true');
       tileCopy.inert = true;
-      tileCopy.style.left = `${column * archivePeriodX}px`;
-      tileCopy.style.top = `${row * archivePeriodY}px`;
+      tileCopy.style.left = `${column * archivePeriodX()}px`;
+      tileCopy.style.top = `${row * archivePeriodY()}px`;
       archiveWorld.append(tileCopy);
     }
   }
@@ -650,8 +672,8 @@ if (archiveBoard && desktopArchive.matches && !window.matchMedia('(prefers-reduc
 
 if (archiveBoard && archiveWorld && archiveTile && desktopArchive.matches) {
   archiveCards.forEach((card, index) => {
-    card.style.left = `${(index % 4) * 676}px`;
-    card.style.top = `${Math.floor(index / 4) * 520}px`;
+    card.style.left = `${(index % 4) * 676 * archiveScale()}px`;
+    card.style.top = `${Math.floor(index / 4) * 520 * archiveScale()}px`;
   });
   syncArchiveCopies();
 
@@ -698,8 +720,8 @@ if (archiveBoard && archiveWorld && archiveTile && desktopArchive.matches) {
   archiveBoard.addEventListener('pointermove', (event) => {
     if (!panStart || event.pointerId !== panStart.pointerId) return;
     archiveBoard.classList.remove('has-nudge-hint');
-    archiveWorld.style.left = `${wrap(panStart.left + event.clientX - panStart.x, archivePeriodX)}px`;
-    archiveWorld.style.top = `${wrap(panStart.top + event.clientY - panStart.y, archivePeriodY)}px`;
+    archiveWorld.style.left = `${wrap(panStart.left + event.clientX - panStart.x, archivePeriodX())}px`;
+    archiveWorld.style.top = `${wrap(panStart.top + event.clientY - panStart.y, archivePeriodY())}px`;
   });
 
   const finishPanning = (event) => {
@@ -988,6 +1010,7 @@ if (conceptStage) {
   conceptMedia.forEach((asset, index) => {
     const card = document.createElement('div');
     card.className = 'concept-lab__card';
+    if (asset.type === 'video') card.classList.add('video-watch-badge-host');
     card.setAttribute('aria-hidden', 'true');
     const media = document.createElement(asset.type === 'video' ? 'video' : 'img');
     media.src = asset.src;
@@ -1144,6 +1167,7 @@ if (conceptHelixStage) {
   const cards = media.map(([src,type], index) => {
     const card = document.createElement('figure');
     card.className = 'concept-helix__card';
+    if (type === 'video') card.classList.add('video-watch-badge-host');
     card.tabIndex = 0;
     card.setAttribute('aria-label', `Концепт ${String(index + 1).padStart(2,'0')}`);
     const item = document.createElement(type === 'video' ? 'video' : 'img');
@@ -1167,7 +1191,7 @@ if (conceptHelixStage) {
     return {card,item,type,index};
   });
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const compact = matchMedia('(max-width: 900px)');
+  const compact = matchMedia('(max-width: 600px)');
   const mobileCards = [...cards.slice(0,4), cards[5]];
   let active = false;
   let frame = 0;
@@ -1251,7 +1275,7 @@ if (conceptHelixStage) {
     const radiusX = Math.min(bounds.width * 0.25, 420);
     const radiusZ = Math.min(bounds.height * 0.38, 390);
     const rowGap = Math.min(bounds.height * 0.16, 150);
-    const cardWidth = Math.min(bounds.width * 0.22, 360);
+    const cardWidth = Math.min(bounds.width * (innerWidth <= 900 ? 0.32 : 0.22), 360);
     cards.forEach(({card,item,type,index}) => {
       card.style.display = '';
       const slot = ((index - phase + cards.length / 2) % cards.length + cards.length) % cards.length - cards.length / 2;

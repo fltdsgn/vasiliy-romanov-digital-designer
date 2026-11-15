@@ -238,3 +238,9 @@ html.has-hero-entrance .b2b-project-intro.is-visible .portfolio__word,html.has-h
   width:186.32%;
  }
 }
+
+@media(max-width:1024px){
+ .b2b-image-section--matching{position:relative}
+ .b2b-image-section__open-video{position:absolute;top:auto;right:12px;bottom:12px;left:auto;z-index:4;display:flex;width:auto;height:44px;align-items:center;justify-content:center;gap:8px;padding:0 14px;transform:none;border:1px solid rgba(255,255,255,.52);border-radius:999px;background:rgba(15,16,22,.62);color:#fff;font:600 14px/1 'TT Interfaces',Arial,sans-serif;white-space:nowrap;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 6px 20px rgba(0,0,0,.18)}
+ .b2b-image-section__open-video svg{width:18px;height:18px;margin:0;flex:none}
+}
