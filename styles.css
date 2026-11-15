@@ -461,7 +461,7 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
 .approach__muted{color:var(--ink)}
 @media(max-width:600px){
   .topbar{height:44px;padding:16px 16px 8px;display:flex;align-items:center;justify-content:space-between}
-  .topbar__name{position:static;left:auto;top:auto;transform:none;flex:none;font-size:15px;font-weight:600;line-height:.95}
+  .topbar__name{position:static;left:auto;top:auto;transform:none;flex:none;font-size:14px;font-weight:600;line-height:.95}
   .topbar__links{display:flex;width:auto;flex:none;align-items:center;justify-content:flex-end;gap:20px}
   .topbar__contact,.topbar__cv{gap:0;font-size:14px;font-weight:600;line-height:20px}
   .telegram-icon,.download-icon,.topbar__link-label,.topbar__contact .topbar__link-label,.topbar__cv .topbar__link-label{display:none}
@@ -558,7 +558,7 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
   .showreel__cursor .showreel__play-icon{width:20px;height:20px}
   .showreel__mobile-label{display:inline;font:600 14px/1 'TT Interfaces',Arial,sans-serif;white-space:nowrap}
   .showreel__cursor:hover{transform:none}
-  .topbar{padding-inline:16px}
+  .topbar{padding-inline:16px 20px}
   .footer__actions{width:100%;gap:8px}
   .footer__actions a{flex:1 1 0;min-width:0;padding-inline:8px;white-space:nowrap}
   .footer__name-canvas{display:none}
@@ -566,7 +566,7 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
   .experience.section-pad{gap:16px;padding-top:56px;padding-bottom:56px}
   .approach h2{font-size:28px;line-height:1.25;letter-spacing:-.03em}
   .archive__heading{height:210px;justify-content:flex-start;padding:54px 0 0}
-  .topbar__links{width:auto;gap:16px}
+  .topbar__links{width:auto;gap:clamp(12px,4.3vw,16px)}
   .topbar__contact,.topbar__cv{flex:none;font-size:13px;white-space:nowrap}
   .topbar__cv .topbar__mobile-label{max-width:none;white-space:nowrap}
   .topbar__mobile-label{display:block}
@@ -641,7 +641,7 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
   .concept-helix__intro h2 span:first-child{font-size:clamp(64px,14vw,108px)}
   .concept-helix__intro h2 span:last-child{font-size:clamp(38px,8vw,62px)}
   .concept-helix__gallery{position:absolute;inset:max(160px,19svh) 0 0;display:block;overflow:visible;margin:0;transform:none;transform-style:flat}
-  .concept-helix__card{position:absolute;top:calc(26% + 24px);left:50%;width:88vw;height:min(100vw,52svh);aspect-ratio:510/580;border-radius:24px;box-shadow:0 10px 26px rgba(0,0,0,.3);backface-visibility:hidden}
+  .concept-helix__card{position:absolute;top:calc(26% + 24px);left:50%;width:88vw;height:min(100vw,52svh);aspect-ratio:510/580;border-radius:24px;box-shadow:0 10px 26px rgba(0,0,0,.3);backface-visibility:hidden;transform:translateX(-50%)}
 }
 @media(max-width:480px){.concept-helix__card{top:calc(26% + 24px);width:88vw;border-radius:24px}}
 @media(min-width:901px) and (prefers-reduced-motion:reduce){
