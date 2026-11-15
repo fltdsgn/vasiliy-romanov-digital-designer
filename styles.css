@@ -553,7 +553,10 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
 .archive__show-all{display:none}
 @media(max-width:600px){
   .showreel{scroll-margin-top:44px}
-  .showreel__cursor{left:auto;top:auto;right:16px;bottom:16px;transform:none}
+  .showreel__cursor{left:auto;top:auto;right:16px;bottom:16px;width:auto;min-width:132px;height:48px;gap:8px;padding:0 14px;border-radius:999px;opacity:1;pointer-events:auto;transform:none}
+  .showreel__cursor .hover-pill__viewport{display:none}
+  .showreel__cursor .showreel__play-icon{width:20px;height:20px}
+  .showreel__mobile-label{display:inline;font:600 14px/1 'TT Interfaces',Arial,sans-serif;white-space:nowrap}
   .showreel__cursor:hover{transform:none}
   .topbar{padding-inline:16px}
   .footer__actions{width:100%;gap:8px}
@@ -567,14 +570,16 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
   .topbar__contact,.topbar__cv{flex:none;font-size:13px;white-space:nowrap}
   .topbar__cv .topbar__mobile-label{max-width:none;white-space:nowrap}
   .topbar__mobile-label{display:block}
-  .float-nav{left:16px;right:16px;width:auto;max-width:none;justify-content:space-between;padding:5px 8px;transform:none}
+  .float-nav{left:8px;right:8px;width:auto;max-width:none;justify-content:stretch;gap:0;padding:4px;overflow:hidden;transform:none}
   html.has-hero-entrance .float-nav.is-entrance-pending{transform:translateY(24px)}
   html.has-hero-entrance .float-nav.is-entrance-visible{transform:none}
   @media(prefers-reduced-motion:reduce){html.has-hero-entrance .float-nav.is-entrance-pending,html.has-hero-entrance .float-nav.is-entrance-visible{transform:none}}
   .float-nav__mobile-label{display:inline}
-  .float-nav>a{min-height:48px;padding:10px 12px;font-size:14px;line-height:18px}
+  .float-nav>a{flex:1 1 0;min-width:0;min-height:48px;padding:8px 3px;font-size:clamp(10px,3.2vw,12px);line-height:16px;white-space:nowrap}
+  .float-nav>a.float-nav__concepts{display:none!important}
   .archive__show-all{display:flex}
 }
+.showreel__mobile-label{display:none}
 @media(min-width:601px) and (max-width:800px){
   .topbar{padding-inline:10px}
   .topbar__name{font-size:14px}
