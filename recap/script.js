@@ -1,0 +1,394 @@
+if ('scrollRestoration' in history) history.scrollRestoration = 'auto';
+
+const heroVideo = document.getElementById('hero-video');
+const heroIntro = document.getElementById('hero-intro');
+
+const INTRO_FADE_RANGE = 0.08;
+
+function updateHeroIntro() {
+  if (!heroIntro || !heroVideo.duration) return;
+  const progress = heroVideo.currentTime / heroVideo.duration;
+  const opacity = Math.max(0, 1 - progress / INTRO_FADE_RANGE);
+  heroIntro.style.opacity = opacity;
+  heroIntro.style.visibility = opacity > 0 ? 'visible' : 'hidden';
+}
+
+heroVideo.addEventListener('timeupdate', updateHeroIntro);
+heroVideo.pause();
+// ---------- Benefits: scroll-driven card stack ----------
+//
+// The pinned scene plays out in 5 equal stages as the section scrolls by:
+// each stage sends the next sticky note (starting with the orange intro
+// card) flying straight up and out, revealing the one stacked behind it.
+const benefitsSection = document.getElementById('benefits');
+const benefitsSceneSlot = document.getElementById('benefits-scene-slot');
+const benefitsScene = document.getElementById('benefits-scene');
+const benefitsFlip = document.getElementById('benefits-flip');
+const benefitsHeader = document.getElementById('benefits-header');
+const benefitsCards = document.querySelectorAll('.benefits__card');
+
+benefitsCards.forEach((card) => {
+  const index = Number(card.dataset.cardIndex);
+  card.style.setProperty('--fade-delay', `${index * 0.12}s`);
+});
+
+// .benefits__scene stays a fixed 630x576 (so the flip card's own math never
+// has to think about viewport size) and is scaled down as one uniform unit
+// to fit whatever the slot's width/height clamp leaves available - same
+// slot+scale approach as .service__board-slot, chosen because clamping
+// width (vw) and height (vh) independently on the scene itself let its
+// aspect ratio drift and squash the card whenever a viewport's width and
+// height didn't shrink together.
+function updateBenefitsSceneScale() {
+  if (!benefitsSceneSlot || !benefitsScene) return;
+  const rect = benefitsSceneSlot.getBoundingClientRect();
+  const scale = Math.min(1, rect.width / 630, rect.height / 576);
+  benefitsScene.style.transform = `translate(-50%, -50%) scale(${scale})`;
+}
+
+window.addEventListener('resize', updateBenefitsSceneScale);
+updateBenefitsSceneScale();
+
+function clamp01(n) {
+  return Math.min(1, Math.max(0, n));
+}
+
+function updateBenefits() {
+  if (!benefitsSection) return;
+
+  const scrollRange = benefitsSection.offsetHeight - window.innerHeight;
+  const progress = scrollRange > 0
+    ? clamp01((window.scrollY - benefitsSection.offsetTop) / scrollRange)
+    : 0;
+
+  const stageCount = benefitsCards.length + 1; // header + one per card
+  const stage = progress * stageCount;
+
+  const headerP = clamp01(stage);
+  if (benefitsFlip) {
+    // The header and the white card underneath are really one physical
+    // card with two faces glued back-to-back, so this single wrapper does
+    // the entire 180deg turn - backface-visibility on each face then
+    // handles which one is actually showing, with a clean handoff exactly
+    // at the 90deg midpoint (no manual z-index juggling needed).
+    benefitsFlip.style.transform = `rotateY(${headerP * -180}deg)`;
+  }
+  if (benefitsHeader) {
+    // The hard sticky-note shadow reads as a flat 2D offset, so once it
+    // starts turning it just skews into an ugly sliver - cut it the instant
+    // rotation begins instead of trying to fake correct geometry.
+    benefitsHeader.style.setProperty('--shadow-fade', headerP > 0 ? '0' : '1');
+  }
+
+  const CARD_REST = 0.35; // fraction of each card's stage it just sits still before sliding away
+  const lastIndex = benefitsCards.length - 1;
+
+  benefitsCards.forEach((card) => {
+    const index = Number(card.dataset.cardIndex);
+    // Card 0 (white) is the back face of the header's card - it's fixed
+    // 180deg away from the front face and turns only because the shared
+    // .benefits__flip wrapper rotates; backface-visibility keeps it hidden
+    // until it swings past the halfway point.
+    const isBackFace = index === 0;
+    const baseTransform = isBackFace
+      ? `rotate(var(--rotate, 0deg)) rotateY(180deg)`
+      : `rotate(var(--rotate, 0deg))`;
+
+    if (isBackFace) {
+      // Only visible for the second half of the flip (headerP 0.5-1) - fade
+      // its shadow in across that same visible window instead of the whole
+      // 0-1 range, so it starts at 0 right as the sliver becomes visible.
+      const backShadow = clamp01((headerP - 0.5) / 0.5);
+      card.style.setProperty('--shadow-fade', String(backShadow));
+    }
+
+    if (index === lastIndex) {
+      // The back-most card in the pile stays put instead of flying off too -
+      // otherwise the screen empties out right before the next section
+      // starts, which reads as an oversized gap.
+      card.style.transform = baseTransform;
+      card.classList.toggle('is-visible', headerP >= 1);
+      return;
+    }
+
+    const localP = clamp01(stage - (index + 1));
+    const cardP = clamp01((localP - CARD_REST) / (1 - CARD_REST));
+    card.style.transform = `${baseTransform} translateY(${cardP * -60}%)`;
+    if (isBackFace) {
+      // Visible only from the moment it swings into view (headerP > 0.5)
+      // through the end of its own slide-away - not gated by the shared
+      // is-visible class, so it actually disappears again once it's gone,
+      // instead of staying stuck at full opacity forever.
+      card.style.opacity = headerP > 0.5 && cardP < 1 ? '1' : '0';
+    } else {
+      card.classList.toggle('is-visible', headerP >= 1 && cardP < 1);
+    }
+  });
+}
+
+window.addEventListener('scroll', updateBenefits, { passive: true });
+window.addEventListener('resize', updateBenefits);
+updateBenefits();
+
+// ---------- Generic scroll reveal ----------
+//
+// Any element with class "reveal" (fade/slide) or "blur-line" (blur reveal,
+// one line at a time) animates in the first time it enters the viewport.
+// Elements sharing a [data-reveal-group] wrapper are staggered in document
+// order, 0.12s apart, instead of all appearing at once.
+const REVEAL_SELECTOR = '.reveal, .blur-line, .scribble-arrow';
+
+document.querySelectorAll('[data-reveal-group]').forEach((group) => {
+  group.querySelectorAll(REVEAL_SELECTOR).forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.12}s`;
+  });
+});
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll(REVEAL_SELECTOR).forEach((el) => revealObserver.observe(el));
+
+// ---------- Product: simplified live board demo ----------
+//
+// A cut-down copy of the real recap board: cards can be dragged around,
+// but there's no panning/zooming the board itself and no click-to-open
+// (this is just a landing-page taste of the product, not the app). Plays
+// the same splash-loader-then-cards-drop-in entrance as the real app, the
+// first time it scrolls into view.
+function playOneShotEntrance(el, loadingClass) {
+  el.classList.add(loadingClass);
+  el.addEventListener('animationend', () => el.classList.remove(loadingClass), { once: true });
+}
+
+const boardDemo = document.getElementById('board-demo');
+const boardDemoLoader = document.getElementById('board-demo-loader');
+const boardDemoWorld = document.getElementById('board-demo-world');
+
+if (boardDemo && boardDemoWorld) {
+  const boardObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      boardObserver.unobserve(entry.target);
+      boardDemo.classList.add('is-ready');
+      setTimeout(() => {
+        boardDemoLoader?.classList.add('is-hidden');
+        boardDemoWorld.querySelectorAll('.note').forEach((note) => {
+          note.classList.remove('note--pending');
+          playOneShotEntrance(note, 'note--loading-in');
+        });
+      }, 1100);
+    });
+  }, { threshold: 0.3 });
+  boardObserver.observe(boardDemo);
+
+  // Drag-only interaction: no board pan/zoom, no click-to-open - just
+  // moving a card is enough of a taste of the real board's feel.
+  let dragTarget = null;
+  let dragOffsetX = 0;
+  let dragOffsetY = 0;
+
+  function pointerToBoard(e) {
+    const rect = boardDemoWorld.getBoundingClientRect();
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  }
+
+  function onNotePointerDown(e) {
+    const note = e.currentTarget;
+    // Read the note's actual current position via offsetLeft/offsetTop
+    // (unaffected by its rotate() transform) rather than parsing
+    // note.style.left/top - those start out as percentages (for centering),
+    // and parseFloat('38%') silently returns 38 as if it were pixels, which
+    // used to send the note flying to the wrong spot on the very first
+    // drag. getBoundingClientRect was tried too, but a rotated note's
+    // bounding box doesn't line up with its own left/top, causing a small
+    // snap the instant you grab it.
+    const worldRect = boardDemoWorld.getBoundingClientRect();
+    dragTarget = note;
+    dragOffsetX = e.clientX - (worldRect.left + note.offsetLeft);
+    dragOffsetY = e.clientY - (worldRect.top + note.offsetTop);
+    note.style.left = `${note.offsetLeft}px`;
+    note.style.top = `${note.offsetTop}px`;
+    note.classList.add('is-dragging');
+    try { note.setPointerCapture(e.pointerId); } catch {}
+    e.stopPropagation();
+  }
+
+  function onNotePointerMove(e) {
+    if (!dragTarget) return;
+    const p = pointerToBoard(e);
+    dragTarget.style.left = `${p.x - dragOffsetX}px`;
+    dragTarget.style.top = `${p.y - dragOffsetY}px`;
+  }
+
+  function onNotePointerUp(e) {
+    if (!dragTarget) return;
+    dragTarget.classList.remove('is-dragging');
+    try { dragTarget.releasePointerCapture(e.pointerId); } catch {}
+    dragTarget = null;
+  }
+
+  boardDemoWorld.querySelectorAll('.note').forEach((note) => {
+    note.addEventListener('pointerdown', onNotePointerDown);
+    note.addEventListener('pointermove', onNotePointerMove);
+    note.addEventListener('pointerup', onNotePointerUp);
+  });
+}
+
+// ---------- Services: pinned scroll stack ----------
+//
+// Same idea as the Benefits card pile: all 3 steps sit pinned in the same
+// spot, and scrolling sends each one sliding up and out in turn, front
+// stage first, revealing the next one underneath. The last stage stays
+// put instead of also sliding away, so the section hands off cleanly into
+// whatever comes after it.
+const servicesSection = document.getElementById('services');
+const serviceStages = document.querySelectorAll('.services__stage');
+
+function updateServices() {
+  if (!servicesSection || !serviceStages.length) return;
+
+  const scrollRange = servicesSection.offsetHeight - window.innerHeight;
+  const progress = scrollRange > 0
+    ? clamp01((window.scrollY - servicesSection.offsetTop) / scrollRange)
+    : 0;
+
+  const stage = progress * serviceStages.length;
+  const lastIndex = serviceStages.length - 1;
+
+  serviceStages.forEach((el) => {
+    const index = Number(el.dataset.stageIndex);
+    if (index === lastIndex) {
+      el.style.transform = 'translateY(0)';
+      return;
+    }
+    const localP = clamp01(stage - index);
+    el.style.transform = `translateY(${localP * -110}%)`;
+  });
+}
+
+window.addEventListener('scroll', updateServices, { passive: true });
+window.addEventListener('resize', updateServices);
+updateServices();
+
+// ---------- Services (crossfade variant) ----------
+//
+// Alternative to the slide-stack above (see index-services-slide-backup.html
+// for that one): stages stay in place and crossfade into each other, with
+// each stage's words fading/sliding in one at a time while it's active -
+// closer to the reference the user pointed at (zero.university).
+const fadeSection = document.getElementById('services');
+const fadeStages = document.querySelectorAll('.services-fade__stage');
+
+fadeStages.forEach((stage) => {
+  stage.querySelectorAll('[data-split-words]').forEach((el) => {
+    const words = el.textContent.split(' ');
+    el.textContent = '';
+    words.forEach((word, i) => {
+      const span = document.createElement('span');
+      span.className = 'word-reveal';
+      span.textContent = word;
+      span.style.transitionDelay = `${i * 0.03}s`;
+      el.appendChild(span);
+      if (i < words.length - 1) el.appendChild(document.createTextNode(' '));
+    });
+  });
+});
+
+function updateServicesFade() {
+  if (!fadeSection || !fadeStages.length) return;
+
+  const scrollRange = fadeSection.offsetHeight - window.innerHeight;
+  const progress = scrollRange > 0
+    ? clamp01((window.scrollY - fadeSection.offsetTop) / scrollRange)
+    : 0;
+
+  const activeIndex = Math.min(fadeStages.length - 1, Math.floor(progress * fadeStages.length));
+
+  fadeStages.forEach((stage) => {
+    const index = Number(stage.dataset.stageIndex);
+    stage.classList.toggle('is-active', index === activeIndex);
+  });
+}
+
+window.addEventListener('scroll', updateServicesFade, { passive: true });
+window.addEventListener('resize', updateServicesFade);
+updateServicesFade();
+
+// ---------- "Join beta" links: skip past the CTA reveal, not to its top ----------
+//
+// #cta's own top edge is the *start* of its reveal (see .light-content's
+// negative margin in styles.css) - jumping a plain anchor link there lands
+// right where .light-content is still fully covering the form, which reads
+// as "the link is broken". Scroll past that overlap instead, landing right
+// where the form is actually visible.
+const ctaSection = document.getElementById('cta');
+const lightContent = document.querySelector('.light-content');
+
+document.querySelectorAll('a[href="#cta"]').forEach((link) => {
+  link.addEventListener('click', (e) => {
+    if (!ctaSection || !lightContent) return;
+    e.preventDefault();
+    const overlapPx = Math.abs(parseFloat(getComputedStyle(lightContent).marginBottom)) || 0;
+    const target = ctaSection.getBoundingClientRect().top + window.scrollY + overlapPx + 32;
+    window.scrollTo({ top: target, behavior: 'smooth' });
+  });
+});
+
+// ---------- Footer wordmark: fit to the exact content width ----------
+//
+// A block element's own box always fills its container regardless of how
+// long its text is, so no vw-based font-size can make the glyphs themselves
+// touch the edge (kerning/letter shapes eat into the box unpredictably).
+// Instead, measure the actual rendered text width at the current font-size
+// and rescale so it exactly matches the available width.
+const footerWordmark = document.querySelector('.site-footer__wordmark');
+
+function fitFooterWordmark() {
+  if (!footerWordmark) return;
+  const availableWidth = footerWordmark.getBoundingClientRect().width;
+  const range = document.createRange();
+  range.selectNodeContents(footerWordmark);
+  const textWidth = range.getBoundingClientRect().width;
+  if (!textWidth || !availableWidth) return;
+  const currentFontSize = parseFloat(getComputedStyle(footerWordmark).fontSize);
+  footerWordmark.style.fontSize = `${currentFontSize * (availableWidth / textWidth)}px`;
+}
+
+window.addEventListener('resize', fitFooterWordmark);
+document.fonts.ready.then(fitFooterWordmark);
+fitFooterWordmark();
+
+// ---------- Services board: scale to fit instead of overflowing ----------
+//
+// .service__board-slot is the responsive flex item; .service__board itself
+// stays a constant 1010x810 (all its overlaid children - folders, waveform,
+// processing loader, qa chat - are positioned with fixed px against that
+// exact size). Scaling the whole thing down to match the slot's actual
+// rendered width keeps every overlay correctly placed with zero changes to
+// their own code, on any screen narrow enough that the board would
+// otherwise have overflowed the card.
+const SERVICE_BOARD_RADIUS = 44; // px, matches .service__board-slot's base border-radius
+
+function updateServiceBoardScale() {
+  document.querySelectorAll('.service__board-slot').forEach((slot) => {
+    const board = slot.querySelector(':scope > .service__board');
+    if (!board) return;
+    const scale = slot.getBoundingClientRect().width / 1010;
+    board.style.transform = `scale(${scale})`;
+    // The slot's own corner radius clips the scaled-down board from
+    // outside - it doesn't shrink along with the board's transform (that
+    // only affects what's drawn *inside* the slot), so without this the
+    // corners look proportionally too round on a scaled-down board.
+    slot.style.borderRadius = `${SERVICE_BOARD_RADIUS * scale}px`;
+  });
+}
+
+window.addEventListener('resize', updateServiceBoardScale);
+updateServiceBoardScale();

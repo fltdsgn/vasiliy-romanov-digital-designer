@@ -202,7 +202,8 @@
 .footer{position:sticky;bottom:0;z-index:0;display:flex;height:auto;min-height:auto;flex-direction:column;gap:clamp(21px,1.667vw,32px);overflow:hidden;padding:clamp(56px,5.2083vw,100px) var(--gutter) clamp(16px,1.25vw,24px);border-radius:0;background:#0002ed;color:#fff}
 .footer__top{position:relative;display:flex;flex:0 0 clamp(372px,29.0625vw,558px);justify-content:flex-end;width:calc(100% + var(--gutter));margin-right:calc(-1 * var(--gutter));padding-bottom:clamp(21px,1.667vw,32px)}
 .footer__contact{z-index:1;display:flex;width:min(740px,100%);max-width:740px;flex-direction:column;justify-content:center;gap:clamp(21px,1.667vw,32px)}
-@media(min-width:901px){.footer__top,.footer__signature,.footer__legal{width:100%;max-width:1796px;margin-inline:auto}.footer__top{margin-right:auto}.footer__contact{position:absolute;top:0;right:0;bottom:0;width:min(620px,100%);max-width:740px}}
+@media(min-width:901px){.footer__top,.footer__signature,.footer__legal{width:100%;max-width:2436px;margin-inline:auto}.footer__top{margin-right:auto}.footer__contact{position:absolute;top:0;right:0;bottom:0;width:min(620px,100%);max-width:740px}}
+@media(min-width:1921px){.footer{padding-inline:0}.footer__top,.footer__signature,.footer__legal{width:min(calc(100vw - 124px),2436px)}}
 .footer__contact h2{margin:0;font-size:clamp(42px,3.9583vw,76px);font-weight:700;line-height:1.02;letter-spacing:-.01em}
 .footer__contact>p{max-width:none;margin:0;color:#fff;font-size:clamp(16px,1.4583vw,28px);line-height:1.36;letter-spacing:-.01em}
 .footer__actions{display:flex;flex-wrap:wrap;gap:12px;margin:0}

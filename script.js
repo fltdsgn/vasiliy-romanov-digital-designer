@@ -42,7 +42,7 @@ const caseHeaderHero = topbar?.classList.contains('x5-topbar')
   ? document.querySelector('.x5-hero, .b2b-hero')
   : null;
 const tefsHeaderTrigger = topbar?.classList.contains('tefs-topbar')
-  ? document.querySelector('.tefs-overview')
+  ? document.querySelector('.tefs-overview, .recap-overview-trigger')
   : null;
 const desktopResumeLabel = document.querySelector('.topbar__cv .topbar__link-label span:last-child');
 const topbarResumeLink = document.querySelector('.topbar__cv');
@@ -58,6 +58,7 @@ if (footerResumeLabel) footerResumeLabel.textContent = 'Смотреть рез�
 const telegramLink = document.querySelector('.topbar__contact');
 const telegramTile = document.querySelector('.telegram-icon');
 const telegramAnimationContainer = document.querySelector('[data-telegram-animation]');
+const topbarAnimationAssetRoot = location.pathname.startsWith('/recap/') ? '../' : '';
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const hero = document.querySelector('.hero');
 const heroTitle = hero?.querySelector('h1');
@@ -279,7 +280,7 @@ if (window.lottie && telegramLink && telegramTile && telegramAnimationContainer)
     renderer: 'svg',
     loop: true,
     autoplay: false,
-    path: 'assets/icons/telegram.json',
+    path: `${topbarAnimationAssetRoot}assets/icons/telegram.json`,
   });
   let stopAfterCycle = false;
   let isActive = false;
@@ -445,7 +446,7 @@ if (window.lottie && downloadLink && downloadTile && downloadAnimationContainer)
     renderer: 'svg',
     loop: false,
     autoplay: false,
-    path: 'assets/icons/file-text.json',
+    path: `${topbarAnimationAssetRoot}assets/icons/file-text.json`,
   });
   let resetDownloadAfterPlay = false;
 

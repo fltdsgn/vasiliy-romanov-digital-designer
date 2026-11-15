@@ -1,0 +1,234 @@
+/* Portfolio-owned blocks on the Recap landing page. Keep these rules scoped
+   to shared portfolio classes so the source landing layout stays untouched. */
+
+/* The portfolio homepage also has a .hero rule. Reset its flex layout here:
+   otherwise the sticky Recap hero shrinks to its min-content width (zero). */
+.hero {
+  display: block;
+  min-height: 0;
+  padding: 0;
+  text-align: initial;
+}
+
+.tefs-topbar {
+  position: absolute;
+  z-index: 1000;
+  inset: 0 0 auto;
+  display: flex;
+  width: 100%;
+  height: 88px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 36px;
+  color: #161a20;
+  background: transparent;
+}
+
+.tefs-topbar .topbar__name,
+.tefs-topbar .topbar__contact,
+.tefs-topbar .topbar__cv { color: #161a20; }
+.tefs-topbar .topbar__links { width: 100%; margin: 0; }
+.tefs-topbar .telegram-icon { width: 44px; height: 44px; border-radius: 10px; background: #f6ddbd; color: #161a20; }
+.tefs-topbar .telegram-icon > svg { width: 27px; height: 27px; }
+.tefs-topbar .telegram-icon > svg path { fill: #161a20; }
+.tefs-topbar .download-icon { width: 40px; height: 40px; border-radius: 10px; background: #f6ddbd; color: #161a20; }
+.tefs-topbar .download-icon::before { filter: none; }
+.tefs-topbar .telegram-animation svg path,
+.tefs-topbar .download-animation svg path { stroke: #161a20 !important; }
+
+.tefs-topbar.is-pinned {
+  position: fixed;
+  background: rgba(246, 221, 189, .9);
+  -webkit-backdrop-filter: blur(24px) saturate(130%);
+  backdrop-filter: blur(24px) saturate(130%);
+}
+
+.tefs-topbar.is-pinned .topbar__name,
+.tefs-topbar.is-pinned .topbar__contact,
+.tefs-topbar.is-pinned .topbar__cv { color: #161a20; }
+.tefs-topbar.is-pinned .telegram-icon,
+.tefs-topbar.is-pinned .download-icon { color: #161a20; background: #f6ddbd; }
+
+.x5-related {
+  display: flex;
+  width: 100%;
+  max-width: 1920px;
+  --x5-gutter: clamp(24px, 3.23vw, 62px);
+  margin-inline: auto;
+  min-height: 966px;
+  flex-direction: column;
+  align-items: center;
+  gap: 72px;
+  padding: 150px var(--x5-gutter);
+  border-radius: 0;
+  background: #14151d;
+  color: #fff;
+}
+.x5-related.x5-section { padding-right: var(--x5-gutter); padding-left: var(--x5-gutter); }
+.x5-related .x5-kicker { margin: 0; color: rgba(22,26,32,.55); font-size: 20px; font-weight: 400; line-height: 1.2; letter-spacing: -.02em; }
+.x5-related__heading { text-align: center; }
+.x5-related__heading .x5-kicker { margin-bottom: 12px; color: rgba(255,255,255,.65); }
+.x5-related__heading h2 {
+  margin: 0;
+  font-size: clamp(64px, 5.84vw, 112px);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -.03em;
+}
+.x5-related__grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+}
+.x5-related__grid a {
+  display: flex;
+  min-width: 0;
+  height: 442px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  color: inherit;
+  text-decoration: none;
+}
+.x5-related__media {
+  position: relative;
+  display: block;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 28px;
+}
+.x5-related__media picture { display: block; width: 100%; height: 100%; }
+.x5-related__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .4s cubic-bezier(.2,.75,.25,1);
+}
+.x5-related__grid a > span { display: flex; flex-direction: column; gap: 8px; font-size: 20px; line-height: 1.1; letter-spacing: -.01em; }
+.x5-related__grid b { font-size: 20px; font-weight: 700; }
+.x5-related__grid small { color: rgba(255,255,255,.5); font-size: 20px; font-weight: 500; }
+@media (hover:hover) and (pointer:fine) {
+  .x5-related__grid a:hover .x5-related__media img,
+  .x5-related__grid a:focus-visible .x5-related__media img { transform: scale(1.035); }
+}
+
+.footer-reveal { height: auto; min-height: 0; }
+.footer {
+  position: relative;
+  inset: auto;
+  z-index: auto;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  border-radius: 0;
+}
+.cta__form--product-link { display: flex; justify-content: center; }
+.cta__form--product-link > a { display: flex; width: 100%; align-items: center; justify-content: center; }
+
+/* Recap CTA, aligned to Figma frame 1110:15841. */
+.cta { height: 120vh; }
+.cta__title { top: 26.2%; }
+.cta__form-wrap {
+  top: 44.2%;
+  width: 45.6%;
+  max-width: 870px;
+  min-width: 320px;
+  gap: 20px;
+}
+.cta__form--product-link {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.cta__form--product-link .cta__submit {
+  width: 100%;
+  min-height: 88px;
+  justify-content: center;
+  padding: 28px 32px;
+  border: 4px solid #8e3219;
+  background: #f06945;
+  box-shadow: 0 4px 0 #8e3219;
+  color: #fff;
+  font-size: 24px;
+  line-height: 24px;
+  letter-spacing: -.02em;
+}
+.cta__form--product-link .cta__submit:hover { background: #f06945; transform: scale(1.02); }
+.cta__form--product-link .cta__submit:active { transform: scale(.98); }
+.cta__note { text-align: center; }
+.cta__scribble--left { left: 16.2%; }
+.cta__scribble--right { right: 18.4%; }
+.cta__scribble-arrow { width: auto; height: auto; }
+.cta__scribble--left .cta__scribble-arrow { transform: rotate(90deg); }
+.cta__scribble--right .cta__scribble-arrow { transform: rotate(180deg); }
+
+@media (max-width: 1000px) {
+  .tefs-topbar { padding-inline: 24px; }
+  .x5-related { --x5-gutter: 32px; min-height: 0; gap: 56px; padding: 100px var(--x5-gutter); }
+  .x5-related__grid { gap: 20px; }
+  .x5-related__grid a { height: 340px; }
+  .x5-related__grid b,
+  .x5-related__grid small { font-size: 16px; }
+}
+@media (max-width: 600px) {
+  .tefs-topbar { height: 52px; padding: 16px 16px 0; }
+  .tefs-topbar .topbar__name { display: block; position: static; transform: none; font-size: 15px; }
+  .tefs-topbar .topbar__links { width: auto; flex: 0 0 auto; justify-content: flex-end; gap: 0; }
+  .tefs-topbar .topbar__contact { gap: 0; font-size: 14px; }
+  .tefs-topbar .telegram-icon,
+  .tefs-topbar .topbar__link-label { display: none; }
+  .tefs-topbar .topbar__mobile-label {
+    display: block;
+    color: #161a20;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 4px;
+  }
+  .x5-related { --x5-gutter: 20px; gap: 40px; padding: 56px var(--x5-gutter); border-radius: 0; }
+  .x5-related__heading .x5-kicker { margin-bottom: 8px; font-size: 16px; }
+  .x5-related__heading h2 { font-size: 44px; }
+  .x5-related__grid { grid-template-columns: 1fr; gap: 32px; }
+  .x5-related__grid a,
+  .x5-related__grid a:nth-child(3) { width: 100%; height: auto; grid-column: auto; gap: 20px; }
+  .x5-related__media { width: 100%; aspect-ratio: 361 / 288; flex: none; border-radius: 24px; }
+  .x5-related__grid a:nth-child(3) .x5-related__media { aspect-ratio: 361 / 266; }
+  .x5-related__grid a > span { gap: 8px; font-size: 20px; line-height: 1.1; }
+  .x5-related__grid b,
+  .x5-related__grid small { font-size: 20px; }
+}
+
+@media (min-width: 601px) and (max-width: 800px) {
+  .x5-related { --x5-gutter: 22px; gap: 39px; padding: 70px var(--x5-gutter); }
+  .x5-related__heading .x5-kicker { margin-bottom: 8px; font-size: 14px; }
+  .x5-related__heading h2 { font-size: 45px; }
+  .x5-related__grid a,
+  .x5-related__grid a:nth-child(3) { width: 100%; height: auto; gap: 14px; justify-self: stretch; }
+  .x5-related__media { aspect-ratio: 1.35; border-radius: 20px; }
+  .x5-related__grid a > span { gap: 6px; font-size: 14px; }
+  .x5-related__grid b,
+  .x5-related__grid small { font-size: 14px; }
+}
+
+@media (min-width: 601px) and (max-width: 1000px) {
+  .x5-related__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+  .x5-related__grid a,
+  .x5-related__grid a:nth-child(3) { width: auto; height: auto; gap: 14px; justify-self: stretch; }
+  .x5-related__media { aspect-ratio: 1.35; flex: none; border-radius: 20px; }
+}
+
+@media (max-width: 860px) {
+  .cta__form-wrap { top: 42%; width: 80%; max-width: none; min-width: 0; }
+  .cta__form--product-link .cta__submit {
+    min-height: 64px;
+    padding: 18px 24px;
+    font-size: clamp(18px, 4vw, 22px);
+    line-height: 24px;
+  }
+  .cta__note { font-size: 14px; }
+}
