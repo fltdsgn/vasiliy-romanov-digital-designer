@@ -1375,7 +1375,7 @@ if (gameDialog && gameFrame && typeof gameDialog.showModal === 'function') {
     opener.addEventListener('click', (event) => {
       event.preventDefault();
       if (gameDialog.open) return;
-      gameFrame.src = '/game/';
+      gameFrame.src = '/game/?embed=1';
       gameDialog.showModal();
     });
   });
