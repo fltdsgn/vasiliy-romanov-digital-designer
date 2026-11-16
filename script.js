@@ -1365,3 +1365,23 @@ if (tefsPage && !prefersReducedMotion.matches && 'IntersectionObserver' in windo
   }, { threshold: .1, rootMargin: '0px 0px -5% 0px' });
   revealTargets.forEach(element => tefsRevealObserver.observe(element));
 }
+
+const gameDialog = document.querySelector('[data-game-dialog]');
+const gameFrame = gameDialog?.querySelector('[data-game-frame]');
+const gameOpeners = document.querySelectorAll('[data-game-open]');
+
+if (gameDialog && gameFrame && typeof gameDialog.showModal === 'function') {
+  gameOpeners.forEach((opener) => {
+    opener.addEventListener('click', (event) => {
+      event.preventDefault();
+      if (gameDialog.open) return;
+      gameFrame.src = '/game/';
+      gameDialog.showModal();
+    });
+  });
+  gameDialog.querySelector('[data-game-close]')?.addEventListener('click', () => gameDialog.close());
+  gameDialog.addEventListener('click', (event) => {
+    if (event.target === gameDialog) gameDialog.close();
+  });
+  gameDialog.addEventListener('close', () => gameFrame.removeAttribute('src'));
+}
