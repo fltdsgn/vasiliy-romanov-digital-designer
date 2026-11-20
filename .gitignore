@@ -7,6 +7,8 @@ assets/**/*.mp4
 assets/**/*.jpg
 !assets/images/B2B FoodTech.jpg
 !assets/images/B2B FoodTec Mob.jpg
+!assets/images/Nefis.jpg
+!assets/images/Tuktuk.jpg
 assets/**/*.jpeg
 assets/**/*.png
 !assets/images/Project outcome.jpg
