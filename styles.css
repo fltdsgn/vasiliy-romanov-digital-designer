@@ -813,6 +813,10 @@ html.has-scroll-reveal .showreel[data-scroll-reveal].is-scroll-revealed{visibili
   #portfolio{padding:16px var(--gutter) 100px}
   #portfolio .portfolio__heading,#portfolio .portfolio__details{display:none}
   #portfolio .projects{margin-top:0}
+  #portfolio .project--recap .project__hover-pill,#portfolio .project--car .project__hover-pill{top:auto;right:12px;bottom:12px;left:auto;width:164px;height:40px;opacity:1;transform:none}
+  #portfolio .project--recap .project__hover-pill .hover-pill__viewport,#portfolio .project--car .project__hover-pill .hover-pill__viewport{flex-basis:148px;width:148px}
+  #portfolio .project--recap .project__hover-pill .hover-pill__ticker,#portfolio .project--car .project__hover-pill .hover-pill__ticker{animation:none;transform:none}
+  #portfolio .project--recap .project__hover-pill .hover-pill__ticker span,#portfolio .project--car .project__hover-pill .hover-pill__ticker span{font-size:12px}
   #showreel{width:100%;height:auto;aspect-ratio:1920/1056;margin-inline:auto;padding:3px}
   #showreel .showreel__screen{border-radius:24px}
 
