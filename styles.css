@@ -391,6 +391,7 @@
 
 /* A quiet image zoom stays clipped inside each project frame. */
 .project__media{display:block;width:100%;aspect-ratio:1.758;overflow:hidden;border-radius:clamp(20px,1.67vw,32px)}
+.project__media picture{display:block;width:100%;height:100%}
 .project__media img{width:100%;height:100%;aspect-ratio:auto;max-height:none;object-fit:cover;border-radius:0;transition:transform .45s cubic-bezier(.2,.7,.25,1)}
 .project--small:nth-child(2) .project__media,.project--car .project__media{aspect-ratio:1.46}
 .project--food .project__media{aspect-ratio:1.57}
@@ -401,6 +402,8 @@
 html.js-motion-pending .topbar,html.js-motion-pending main>*,html.js-motion-pending .float-nav{visibility:hidden}
 html.has-scroll-reveal [data-scroll-reveal]{opacity:0;transform:translate3d(0,24px,0);transition:opacity .65s cubic-bezier(.2,.7,.25,1),transform .65s cubic-bezier(.2,.7,.25,1);transition-delay:var(--scroll-reveal-delay,0ms)}
 html.has-scroll-reveal [data-scroll-reveal].is-scroll-revealed{opacity:1;transform:translate3d(0,0,0)}
+html.has-scroll-reveal:not(.hero-copy-finished) .projects .project{visibility:hidden}
+html.has-scroll-reveal:not(.hero-copy-finished) .projects .project.is-scroll-revealed{opacity:0;transform:translate3d(0,24px,0)}
 @media(prefers-reduced-motion:reduce){html.has-scroll-reveal [data-scroll-reveal]{opacity:1;transform:none;transition:none}}
 
 .topbar{background:rgba(238,236,233,.58);-webkit-backdrop-filter:blur(30px) saturate(145%);backdrop-filter:blur(30px) saturate(145%);box-shadow:none;transition:transform .68s cubic-bezier(.2,.75,.25,1),opacity .68s ease,background-color .2s ease}
@@ -411,9 +414,12 @@ html.has-scroll-reveal [data-scroll-reveal].is-scroll-revealed{opacity:1;transfo
 html.has-hero-entrance .hero__word{display:inline-block;opacity:0;filter:blur(10px);transform:translate3d(0,.32em,0);transition:opacity .7s ease,filter .76s ease,transform .76s cubic-bezier(.2,.75,.25,1);transition-delay:var(--hero-word-delay,0ms)}
 html.has-hero-entrance .hero.is-entrance-visible .hero__word{opacity:1;filter:blur(0);transform:translate3d(0,0,0)}
 html.has-hero-entrance .approach__word{display:inline-block;opacity:0;filter:blur(10px);transform:translate3d(0,.32em,0);transition:opacity .7s ease,filter .76s ease,transform .76s cubic-bezier(.2,.75,.25,1);transition-delay:var(--hero-word-delay,0ms)}
+html.has-scroll-reveal .approach h2[data-scroll-reveal]{opacity:1;transform:none}
+html.has-scroll-reveal #approach .approach__main>.eyebrow[data-scroll-reveal],html.has-scroll-reveal #approach .approach__copy[data-scroll-reveal],html.has-scroll-reveal #approach .approach__specializations[data-scroll-reveal],html.has-scroll-reveal #approach .approach__rates[data-scroll-reveal]{transition-duration:.45s}
+html.has-hero-entrance #approach .approach__word{transition-duration:.62s}
 html.has-hero-entrance .approach h2.is-scroll-revealed .approach__word{opacity:1;filter:blur(0);transform:translate3d(0,0,0)}
 html.has-hero-entrance .portfolio__word{display:inline-block;opacity:0;filter:blur(10px);transform:translate3d(0,.32em,0);transition:opacity .7s ease,filter .76s ease,transform .76s cubic-bezier(.2,.75,.25,1);transition-delay:var(--hero-word-delay,0ms)}
-html.has-hero-entrance .portfolio__heading h2.is-scroll-revealed .portfolio__word{opacity:1;filter:blur(0);transform:translate3d(0,0,0)}
+html.has-hero-entrance.hero-copy-finished .portfolio__heading h2.is-scroll-revealed .portfolio__word,html.has-hero-entrance.hero-copy-finished .portfolio__copy>p.is-scroll-revealed .portfolio__word{opacity:1;filter:blur(0);transform:translate3d(0,0,0)}
 html.has-hero-entrance .float-nav.is-entrance-pending{opacity:0;transform:translate3d(-50%,24px,0);pointer-events:none;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.75,.25,1)}
 html.has-hero-entrance .float-nav.is-entrance-visible{opacity:1;transform:translate3d(-50%,0,0);pointer-events:auto}
 html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer-is-visible .float-nav.is-entrance-visible{opacity:0;pointer-events:none}
@@ -667,7 +673,8 @@ html.has-hero-entrance .footer-is-visible .float-nav.is-entrance-visible,.footer
 }
 @media(max-width:480px){.concept-helix__card{top:calc(26% + 24px);width:88vw;border-radius:24px}}
 @media(min-width:601px) and (max-width:900px){
-  .concept-helix{height:200svh}
+  .concept-helix{height:900px}
+  .concept-helix__sticky{height:min(100svh,900px)}
   .concept-helix + .footer-reveal{margin-top:0}
   .concept-helix__sticky{height:100svh;min-height:680px;overflow:hidden;perspective:1600px;perspective-origin:50% 50%}
   .concept-helix__intro{top:clamp(140px,18vh,230px)}
@@ -713,7 +720,7 @@ html.has-scroll-reveal .showreel[data-scroll-reveal].is-scroll-revealed{visibili
   .portfolio__details>.tags span+span{margin-left:-1px}
   .projects{margin-top:32px}
   .project__caption{display:flex;gap:clamp(4px,.83vw,16px);align-items:flex-start;padding-top:0;font-size:clamp(15px,1.04vw,20px);line-height:1.1;letter-spacing:-.01em}
-  .archive__heading{height:240px;justify-content:flex-start;padding:24px 0 0}
+  .archive__heading{height:180px;justify-content:flex-start;padding:24px 0 0}
   .archive__board{height:clamp(680px,55.7vw,1068px);margin:0 4px;overflow:hidden;border-radius:28px;background:#111;touch-action:pan-y}
   .archive__universe{position:absolute;left:-2252.8px;top:-1305px;width:5678.4px;height:3276px}
   .archive__world{position:absolute;left:1892.8px;top:1092px;width:1892.8px;height:1092px;display:block;grid-template-columns:none;gap:0;padding:0}
@@ -728,13 +735,15 @@ html.has-scroll-reveal .showreel[data-scroll-reveal].is-scroll-revealed{visibili
   .hero>p{font-size:20px}
 }
 @media(min-width:801px) and (max-width:900px){
-  .archive__heading{height:240px;justify-content:flex-start;padding:24px 0 0}
+  .archive__heading{height:180px;justify-content:flex-start;padding:24px 0 0}
 }
 @media(min-width:601px) and (max-width:900px){
+  .archive__board{height:800px}
   .experience__details{display:contents}
   .experience__identity{grid-column:1;grid-row:1}
   .experience__period{grid-column:2;grid-row:1}
   .experience__summary,.experience__results{grid-column:1/-1}
+  .experience__heading h2{font-size:48px;line-height:1.06}
 }
 @media(max-width:600px){
   .hero__intro{font-size:18px}
@@ -742,3 +751,154 @@ html.has-scroll-reveal .showreel[data-scroll-reveal].is-scroll-revealed{visibili
 .footer__arcade-link{display:block;position:absolute;z-index:1;top:32%;right:auto;left:clamp(-150px,-7vw,-96px);width:clamp(210px,13vw,250px);transform:translateY(-50%) rotate(42deg);transform-origin:50% 55%}
 .footer__arcade-link .footer__arcade{position:static;display:block;width:100%;height:auto;top:auto;right:auto;left:auto;transform:none;object-fit:contain;mix-blend-mode:screen}
 @media(max-width:900px){.footer__arcade-link{display:none}}
+
+/* Desktop homepage order: selected projects come before the showreel. */
+@media(min-width:901px){
+  .hero{min-height:641px}
+  main{display:flex;flex-direction:column}
+  main>.hero{order:1}
+  main>#portfolio{order:2}
+  main>#showreel{order:3}
+  main>.approach{order:4}
+  main>#archive{order:5}
+  main>#experience{order:6}
+  main>#concepts{order:7}
+  main>#contact{order:8}
+  #portfolio{padding-top:16px;padding-bottom:150px}
+  #portfolio .portfolio__heading,#portfolio .portfolio__details{display:none}
+  #portfolio .projects{margin-top:0}
+  #portfolio .project--recap,#portfolio .project--car{grid-row:3}
+  #approach{width:100%;max-width:1920px;min-height:0;align-items:center;justify-content:flex-start;gap:0;margin:0 auto 150px;padding:150px max(24px,calc((100% - 1496px)/2)) 0}
+  #approach .approach__merged{display:flex;width:100%;flex-direction:column;align-items:center;gap:72px;text-align:center}
+  #approach .approach__main{display:flex;width:100%;flex-direction:column;align-items:center;gap:32px}
+  #approach .approach__main>.eyebrow{font-size:clamp(16px,1.04vw,20px);line-height:1.19}
+  #approach .approach__main h2{width:100%;max-width:1496px;margin:0;font-size:clamp(40px,4.43vw,85px);font-weight:500;line-height:1.17;letter-spacing:-.01em}
+  #approach .approach__copy{width:min(1274px,100%);margin:0;font-size:clamp(22px,2.29vw,44px);font-weight:500;line-height:1.29;letter-spacing:-.01em}
+  #approach .approach__copy .approach__muted{color:rgba(22,26,32,.5)}
+  #approach .approach__merged-bottom{display:flex;flex-direction:column;align-items:center;gap:44px}
+  #approach .approach__specializations{display:flex;align-items:stretch;overflow:hidden;border:1.5px solid #d4d4d4;border-radius:24px}
+  #approach .approach__specializations span{display:flex;align-items:center;justify-content:center;padding:28px 36px;border-right:1px solid #d4d4d4;font-size:clamp(16px,1.25vw,24px);font-weight:500;line-height:1.27;letter-spacing:-.02em;white-space:nowrap}
+  #approach .approach__specializations span:last-child{border-right:0}
+  #approach .approach__rates{display:flex;align-items:center;justify-content:center;gap:72px;font-size:clamp(16px,1.25vw,24px);font-weight:500;line-height:1.44;letter-spacing:-.02em}
+  #approach .approach__rates p{display:flex;flex-direction:column;margin:0}
+  #approach .approach__rates p span+span{color:rgba(22,26,32,.5)}
+  #approach .approach__legacy{display:none}
+}
+@media(min-width:901px) and (max-width:1366px){.hero{min-height:530px}}
+.approach__merged{display:none}
+.approach__legacy{width:100%}
+.archive-card__logo--text{display:grid;flex:none;place-items:center;width:44px;height:44px;border-radius:12px;color:#fff;font-size:20px;font-weight:700;line-height:1}
+.archive-card__logo--recap{background:#1f396b}
+.archive-card__logo--getmecar{background:#091e32}
+@media(max-width:900px){.float-nav__approach{display:none!important}}
+@media(max-width:900px){.approach__merged{display:none!important}.approach__legacy{display:block}}
+
+/* Tablet: keep the new desktop homepage order and updated content, scaled to portrait widths. */
+@media(min-width:601px) and (max-width:900px){
+  main{display:flex;flex-direction:column}
+  main>.hero{order:1}
+  main>#portfolio{order:2}
+  main>#showreel{order:3}
+  main>.approach{order:4}
+  main>#archive{order:5}
+  main>#experience{order:6}
+  main>#concepts{order:7}
+  main>#contact{order:8}
+
+  .hero{min-height:0;padding:clamp(56px,7vh,80px) 24px 48px}
+  .hero__intro img{width:52px;height:52px}
+  .hero h1{max-width:850px;margin:20px 0 24px;font-size:clamp(46px,7.4vw,64px);line-height:1;letter-spacing:-.035em}
+  .hero>p{max-width:620px;font-size:clamp(18px,2.7vw,22px);line-height:1.2}
+
+  #portfolio{padding:16px var(--gutter) 100px}
+  #portfolio .portfolio__heading,#portfolio .portfolio__details{display:none}
+  #portfolio .projects{margin-top:0}
+  #showreel{width:100%;height:auto;aspect-ratio:1920/1056;margin-inline:auto;padding:3px}
+  #showreel .showreel__screen{border-radius:24px}
+
+  #approach{width:100%;max-width:100%;min-height:0;align-items:center;justify-content:flex-start;gap:0;margin:0 0 100px;padding:100px 28px 0}
+  #approach .approach__merged{display:flex!important;width:100%;flex-direction:column;align-items:center;gap:48px;text-align:center}
+  #approach .approach__main{display:flex;width:100%;flex-direction:column;align-items:center;gap:24px}
+  #approach .approach__main>.eyebrow{font-size:16px;line-height:1.2}
+  #approach .approach__main h2{width:100%;max-width:760px;margin:0;font-size:clamp(34px,5.3vw,46px);font-weight:500;line-height:1.12;letter-spacing:-.02em}
+  #approach .approach__copy{width:min(680px,100%);margin:0;font-size:clamp(18px,2.8vw,21px);font-weight:500;line-height:1.3;letter-spacing:-.015em}
+  #approach .approach__copy .approach__muted{color:rgba(22,26,32,.5)}
+  #approach .approach__legacy{display:none!important}
+  #approach .approach__merged-bottom{display:flex;max-width:680px;width:100%;flex-direction:column;align-items:center;gap:30px}
+  #approach .approach__specializations{display:flex;max-width:100%;flex-wrap:wrap;justify-content:center;overflow:hidden;border:1.5px solid #d4d4d4;border-radius:18px}
+  #approach .approach__specializations span{display:flex;align-items:center;justify-content:center;padding:18px 20px;border-right:1px solid #d4d4d4;font-size:16px;font-weight:500;line-height:1.25;letter-spacing:-.02em;white-space:nowrap}
+  #approach .approach__specializations span:last-child{border-right:0}
+  #approach .approach__rates{display:flex;align-items:center;justify-content:center;gap:clamp(24px,4vw,40px);font-size:clamp(16px,2.5vw,20px);font-weight:500;line-height:1.4;letter-spacing:-.02em}
+  #approach .approach__rates p{display:flex;flex-direction:column;margin:0}
+  #approach .approach__rates p span+span{color:rgba(22,26,32,.5)}
+}
+
+/* Mobile homepage follows the updated desktop section order and content. */
+@media(max-width:600px){
+  :root{--mobile-heading-content-gap:24px}
+  main{display:flex;flex-direction:column}
+  main>.hero{order:1}
+  main>#portfolio{order:2}
+  main>#showreel{order:3}
+  main>.approach{order:4}
+  main>#archive{order:5}
+  main>#experience{order:6}
+  main>#concepts{order:7}
+  main>#contact{order:8}
+
+  .hero{min-height:0;padding:36px 16px 40px}
+  .hero h1{max-width:520px;margin:20px 0 var(--mobile-heading-content-gap);font-size:clamp(38px,10vw,44px);line-height:1;letter-spacing:-.025em}
+  .hero>p{max-width:340px;font-size:18px;line-height:1.2}
+
+  #portfolio{padding:16px 16px 64px}
+  #portfolio .portfolio__heading,#portfolio .portfolio__details{display:none}
+  #portfolio .projects{display:flex;flex-direction:column;gap:32px;margin-top:0}
+  #portfolio .project{width:100%;min-width:0;gap:12px}
+  #portfolio .project--wide:first-child{order:1}
+  #portfolio .project--small:nth-child(2){order:2;width:calc(100% - 72px);align-self:flex-start}
+  #portfolio .project--food{order:3}
+  #portfolio .project--car{order:4;width:calc(100% - 72px);align-self:flex-end}
+  #portfolio .project--recap{order:5}
+  #portfolio .project__media{aspect-ratio:1.35;border-radius:18px}
+  #portfolio .project--small:nth-child(2) .project__media,#portfolio .project--car .project__media{aspect-ratio:1.46}
+  #portfolio .project--food .project__media{aspect-ratio:1.25}
+  #portfolio .project__caption{flex-direction:column;gap:6px;padding-top:0;font-size:14px;line-height:1.2}
+  #portfolio .project__caption strong{font-size:16px}
+  #portfolio .project__caption span{font-size:14px}
+  #portfolio .project--recap .project__hover-pill,#portfolio .project--car .project__hover-pill{top:auto;right:10px;bottom:10px;left:auto;width:164px;height:40px;opacity:1;transform:none}
+  #portfolio .project--recap .project__hover-pill .hover-pill__ticker,#portfolio .project--car .project__hover-pill .hover-pill__ticker{animation:none;transform:none}
+
+  #showreel{height:260px;scroll-margin-top:52px;padding:3px}
+  #showreel .showreel__screen{border-radius:18px}
+
+  #approach{height:auto;min-height:0;align-items:center;justify-content:flex-start;gap:0;margin:0 0 80px;padding:72px 16px 0}
+  #approach .approach__merged{display:flex!important;width:100%;flex-direction:column;align-items:center;gap:30px;text-align:center}
+  #approach .approach__main{display:flex;width:100%;flex-direction:column;align-items:center;gap:18px}
+  #approach .approach__main>.eyebrow{font-size:14px;line-height:1.2}
+  #approach .approach__main h2{width:100%;max-width:520px;margin:0;font-size:clamp(28px,8vw,32px);font-weight:500;line-height:1.12;letter-spacing:-.025em}
+  #approach .approach__copy{width:100%;margin:6px 0 0;font-size:16px;font-weight:500;line-height:1.35;letter-spacing:-.015em}
+  #approach .approach__copy .approach__muted{color:rgba(22,26,32,.5)}
+  #approach .approach__legacy{display:none!important}
+  #approach .approach__merged-bottom{display:flex;width:100%;flex-direction:column;align-items:center;gap:24px}
+  #approach .approach__specializations{display:grid;width:100%;grid-template-columns:repeat(2,minmax(0,1fr));overflow:hidden;border:1px solid #d4d4d4;border-radius:16px}
+  #approach .approach__specializations span{display:flex;min-height:46px;align-items:center;justify-content:center;padding:10px 8px;border-right:1px solid #d4d4d4;border-bottom:1px solid #d4d4d4;font-size:14px;font-weight:500;line-height:1.2;white-space:normal}
+  #approach .approach__specializations span:nth-child(2n){border-right:0}
+  #approach .approach__specializations span:nth-last-child(-n+2){border-bottom:0}
+  #approach .approach__rates{display:grid;width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 20px;text-align:center;font-size:14px;font-weight:500;line-height:1.35}
+  #approach .approach__rates p{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;margin:0}
+  #approach .approach__rates p span+span{color:rgba(22,26,32,.5)}
+
+  #archive .archive__heading{height:auto;justify-content:flex-start;padding:32px 0 var(--mobile-heading-content-gap)}
+  #archive .archive__heading>.eyebrow{font-size:14px}
+  #archive .archive__heading h2{margin-top:10px;font-size:46px;line-height:1.02;letter-spacing:-.04em}
+  #experience{gap:var(--mobile-heading-content-gap);padding-top:56px;padding-bottom:64px}
+  #experience .experience__heading{margin-bottom:0}
+  #experience .experience__heading h2{font-size:44px;line-height:1.06}
+  #experience .experience__results h4{font-size:18px;font-weight:500}
+  #contact .footer__contact h2{margin-bottom:0}
+  #contact .footer__contact>p{margin-bottom:14px}
+  #contact .footer__signature-row{border-bottom-color:rgba(255,255,255,.35)}
+  #concepts{height:175svh}
+  #concepts .concept-helix__sticky{height:100svh}
+  #concepts + .footer-reveal{margin-top:0}
+}

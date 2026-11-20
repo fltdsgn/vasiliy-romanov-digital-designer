@@ -69,7 +69,7 @@ const revealGroups = [
   '.portfolio__heading .eyebrow, .portfolio__heading h2',
   '.portfolio__details>.tags, .portfolio__copy>p',
   '.projects .project',
-  '.approach>.eyebrow, .approach h2',
+  '.approach__main>.eyebrow, .approach__main h2, .approach__main .approach__copy, .approach__specializations, .approach__rates, .approach__legacy>.eyebrow, .approach__legacy h2',
   '.archive__heading .eyebrow, .archive__heading h2, .archive__board',
   '.experience__heading .eyebrow, .experience__heading h2',
   '.experience__item, .resume-button',
@@ -119,7 +119,7 @@ if ('IntersectionObserver' in window && !prefersReducedMotion.matches) {
   const titleWordCount = revealWords(heroTitle, titleStartDelay, titleWordStep);
   const descriptionStartDelay = titleStartDelay + Math.max(0, titleWordCount - 1) * titleWordStep + 100;
   const descriptionWordStep = 58;
-  revealWords(heroDescription, descriptionStartDelay, descriptionWordStep);
+  const heroDescriptionWordCount = revealWords(heroDescription, descriptionStartDelay, descriptionWordStep);
   let heroDescriptionStarted = false;
   let showreelIsVisible = false;
   let showreelWasRevealed = false;
@@ -128,8 +128,18 @@ if ('IntersectionObserver' in window && !prefersReducedMotion.matches) {
     showreelWasRevealed = true;
     showreelSection.classList.add('is-scroll-revealed');
   };
-  revealWords(document.querySelector('.portfolio__heading h2'), 80, 58, 'portfolio__word');
-  revealWords(document.querySelector('.approach h2'), 80, 68, 'approach__word');
+  revealWords(document.querySelector('.portfolio__heading h2'), 0, 58, 'portfolio__word');
+  revealWords(document.querySelector('.portfolio__copy>p'), 0, 58, 'portfolio__word');
+  const approachMainHeading = document.querySelector('#approach .approach__main h2');
+  const approachMainWordStep = 32;
+  const approachMainStartDelay = 450;
+  const approachMainWordDuration = 620;
+  const approachMainWordCount = revealWords(approachMainHeading, approachMainStartDelay, approachMainWordStep, 'approach__word');
+  document.querySelectorAll('.approach__legacy h2').forEach((heading) => revealWords(heading, 80, 68, 'approach__word'));
+  const approachHeadingEndDelay = approachMainStartDelay + Math.max(0, (approachMainWordCount || 1) - 1) * approachMainWordStep + approachMainWordDuration;
+  const approachCopyDelay = approachHeadingEndDelay;
+  const approachSpecializationsDelay = approachCopyDelay + 450;
+  const approachRatesDelay = approachSpecializationsDelay + 450;
   revealWords(document.querySelector('.tefs-outcome__copy h2'), 80, 58, 'portfolio__word');
   if (showreelSection) {
     showreelSection.dataset.scrollReveal = '';
@@ -145,6 +155,15 @@ if ('IntersectionObserver' in window && !prefersReducedMotion.matches) {
     elements.forEach((element, index) => {
       element.dataset.scrollReveal = '';
       let delay = Math.min(index, 5) * 70;
+      if (element.matches('.projects .project')) {
+        const projectOrder = element.classList.contains('project--car') ? 3
+          : element.classList.contains('project--recap') ? 4
+            : index;
+        delay = projectOrder * 180;
+      }
+      if (element.matches('#approach .approach__main .approach__copy')) delay = approachCopyDelay;
+      if (element.matches('#approach .approach__specializations')) delay = approachSpecializationsDelay;
+      if (element.matches('#approach .approach__rates')) delay = approachRatesDelay;
       if (element.matches('.hero__intro')) delay += 120;
       element.style.setProperty('--scroll-reveal-delay', `${delay}ms`);
       if (element.closest('.hero')) initialEntranceTargets.push(element);
@@ -160,8 +179,13 @@ if ('IntersectionObserver' in window && !prefersReducedMotion.matches) {
         revealShowreelWhenReady();
         return;
       }
-      entry.target.classList.add('is-scroll-revealed');
       observer.unobserve(entry.target);
+      const revealTarget = () => entry.target.classList.add('is-scroll-revealed');
+      if (entry.target.closest('#approach')) {
+        requestAnimationFrame(() => requestAnimationFrame(revealTarget));
+      } else {
+        revealTarget();
+      }
     });
   }, {threshold:0.08, rootMargin:'0px 0px -4% 0px'});
 
@@ -179,6 +203,19 @@ if ('IntersectionObserver' in window && !prefersReducedMotion.matches) {
       heroDescriptionStarted = true;
       revealShowreelWhenReady();
     }, descriptionStartDelay);
+    const lastHeroDescriptionWord = heroDescription?.querySelector('.hero__word:last-of-type');
+    if (lastHeroDescriptionWord) {
+      const finishHeroText = () => document.documentElement.classList.add('hero-copy-finished');
+      const onHeroTextTransitionEnd = (event) => {
+        if (event.propertyName !== 'filter') return;
+        lastHeroDescriptionWord.removeEventListener('transitionend', onHeroTextTransitionEnd);
+        finishHeroText();
+      };
+      lastHeroDescriptionWord.addEventListener('transitionend', onHeroTextTransitionEnd);
+      window.setTimeout(finishHeroText, descriptionStartDelay + Math.max(0, heroDescriptionWordCount - 1) * descriptionWordStep + 800);
+    } else {
+      document.documentElement.classList.add('hero-copy-finished');
+    }
   }));
 }
 
@@ -1103,7 +1140,6 @@ if (conceptHelixStage) {
   const cards = media.map(([src,type], index) => {
     const card = document.createElement('figure');
     card.className = 'concept-helix__card';
-    if (type === 'video') card.classList.add('video-watch-badge-host');
     card.tabIndex = 0;
     card.setAttribute('aria-label', `Концепт ${String(index + 1).padStart(2,'0')}`);
     const item = document.createElement(type === 'video' ? 'video' : 'img');
@@ -1128,6 +1164,7 @@ if (conceptHelixStage) {
   });
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const compact = matchMedia('(max-width: 600px)');
+  const tabletLayout = matchMedia('(min-width: 601px) and (max-width: 900px)');
   const mobileCards = [...cards.slice(0,4), cards[5]];
   let active = false;
   let frame = 0;
@@ -1146,7 +1183,7 @@ if (conceptHelixStage) {
     const rect = conceptHelixStage.getBoundingClientRect();
     const range = Math.max(1, conceptHelixStage.offsetHeight - innerHeight);
     const progress = Math.max(0, Math.min(1, -rect.top / range));
-    const mobilePhase = progress * mobileCards.length;
+    const mobilePhase = progress * Math.max(1, mobileCards.length - 1);
     const bounds = gallery.getBoundingClientRect();
     const cardHeight = Math.min(bounds.width * 0.88, 510) * 580 / 510;
     const travel = Math.min(bounds.height * 0.34 + cardHeight * 0.25, innerHeight * 0.58);
@@ -1200,7 +1237,10 @@ if (conceptHelixStage) {
     if (hoverIndex === null && now - lastInteraction > 900) idlePhase = Math.min(cards.length * 0.5, idlePhase + delta * 0.16);
     const rect = conceptHelixStage.getBoundingClientRect();
     const range = Math.max(1, conceptHelixStage.offsetHeight - innerHeight);
-    const scrollPhase = Math.max(0, Math.min(1, -rect.top / range)) * cards.length + idlePhase;
+    const scrollProgress = tabletLayout.matches
+      ? -rect.top / Math.max(1, conceptHelixStage.offsetHeight)
+      : -rect.top / range;
+    const scrollPhase = Math.max(0, Math.min(1, scrollProgress)) * cards.length + idlePhase;
     const target = hoverIndex === null
       ? scrollPhase
       : hoverIndex + Math.round((phase - hoverIndex) / cards.length) * cards.length;
