@@ -913,8 +913,10 @@ html.has-scroll-reveal .showreel[data-scroll-reveal].is-scroll-revealed{visibili
 }
 
 .archive-dialog:not([open]){display:none}
-.archive-dialog[open]{position:fixed;inset:0;z-index:1000;display:grid;width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;place-items:center;margin:0;padding:24px;overflow:hidden;border:0;background:transparent;color:#fff}
+.archive-dialog[open]{position:fixed;inset:0;z-index:1000;display:grid;width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;place-items:center;margin:0;padding:24px;overflow:hidden;border:0;outline:none;box-shadow:none;background:transparent;color:#fff}
 .archive-dialog.is-fallback[open]{background:rgba(8,9,15,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.archive-dialog[open] .archive-modal{animation:archive-modal-desktop-enter .42s cubic-bezier(.22,1,.36,1) both}
+.archive-dialog[open]::backdrop,.archive-dialog.is-fallback[open]{animation:archive-dialog-backdrop-enter .28s ease both}
 body.archive-modal-open{overflow:hidden}
 .archive-dialog::backdrop{background:rgba(8,9,15,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .archive-modal{position:relative;width:min(100%,748px);max-height:100%;overflow:auto;overscroll-behavior:contain;padding:24px 24px 56px;border-radius:48px;background:#161a20;color:#fff;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.25) transparent}
@@ -939,12 +941,21 @@ body.archive-modal-open{overflow:hidden}
 .archive-modal__action-label,.archive-modal__action svg{position:relative;z-index:1}
 .archive-modal__action svg{width:20px;height:20px}
 .archive-modal__action--secondary{--archive-modal-action-fill:rgba(255,255,255,.1);background:#fff;color:#fff}
+.archive-modal__actions--recap .archive-modal__action{--archive-modal-action-fill:#fff;background:transparent;color:#161a20;border:1px solid transparent}
+.archive-modal__actions--recap .archive-modal__action--secondary{border-color:#fff}
+.archive-modal__actions--recap .archive-modal__action:is(:hover,:focus-visible){color:#fff;border-color:rgba(255,255,255,.72)}
+.archive-modal__actions--recap .archive-modal__action--secondary:is(:hover,:focus-visible){border-color:#fff}
+.archive-modal__actions--recap .archive-modal__action--case{--archive-modal-action-fill:#fff;background:#0009f2;color:#fff;border:0}
+.archive-modal__actions--recap .archive-modal__action--case::before{transform:scale(0)}
+.archive-modal__actions--recap .archive-modal__action--case:is(:hover,:focus-visible){color:#161a20;border:0}
+.archive-modal__actions--recap .archive-modal__action--case:is(:hover,:focus-visible)::before{transform:scale(1)}
 .archive-modal__facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:56px;row-gap:32px;padding-top:16px}
 .archive-modal__fact h3,.archive-modal__contribution h3{margin:0 0 12px;color:#fff;font-size:24px;font-weight:650;line-height:1.27}
 .archive-modal__fact p{margin:0;color:rgba(255,255,255,.52);font-size:18px;line-height:1.38;white-space:normal}
 .archive-modal__contribution h3{margin-bottom:12px}
 .archive-modal__contribution ol{display:flex;flex-direction:column;gap:8px;margin:0;padding-left:30px;color:#fff;font-size:18px;line-height:1.25}
 .archive-modal__contribution[hidden]{display:none}
+@keyframes archive-modal-desktop-enter{from{opacity:0;transform:translateY(16px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes archive-modal-mobile-enter{from{opacity:0;transform:translateY(20px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes archive-dialog-backdrop-enter{from{opacity:0}to{opacity:1}}
 @media(max-width:700px){
@@ -969,6 +980,6 @@ body.archive-modal-open{overflow:hidden}
   .archive-modal__fact p,.archive-modal__contribution ol{font-size:16px;line-height:1.25}
   .archive-modal__contribution ol{gap:8px;padding-left:22px}
 }
-@media(max-width:700px) and (prefers-reduced-motion:reduce){
+@media(prefers-reduced-motion:reduce){
   .archive-dialog[open] .archive-modal,.archive-dialog[open]::backdrop,.archive-dialog.is-fallback[open]{animation:none}
 }

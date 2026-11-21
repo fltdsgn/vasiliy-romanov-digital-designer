@@ -953,7 +953,8 @@ function openArchiveProject(card) {
   const actions = project.actions || [];
   const hasSingleAction = actions.length === 1;
   archiveDialogActions.hidden = actions.length === 0;
-  archiveDialogActions.innerHTML = actions.map((action) => `<a class="archive-modal__action${action.external && !hasSingleAction ? ' archive-modal__action--secondary' : ''}" href="${escapeArchiveText(action.href)}"${action.external ? ' target="_blank" rel="noopener noreferrer"' : ''}><span class="archive-modal__action-label">${escapeArchiveText(action.label)}</span>${action.external ? '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 15 15 5M7 5h8v8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>' : ''}</a>`).join('');
+  archiveDialogActions.classList.toggle('archive-modal__actions--recap', card.dataset.archiveCard === 'recap');
+  archiveDialogActions.innerHTML = actions.map((action) => `<a class="archive-modal__action${action.external && !hasSingleAction ? ' archive-modal__action--secondary' : ''}${card.dataset.archiveCard === 'recap' && action.href === '/recap/' ? ' archive-modal__action--case' : ''}" href="${escapeArchiveText(action.href)}"${action.external ? ' target="_blank" rel="noopener noreferrer"' : ''}><span class="archive-modal__action-label">${escapeArchiveText(action.label)}</span>${action.external ? '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 15 15 5M7 5h8v8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>' : ''}</a>`).join('');
   const facts = project.facts || [
     { label: 'Направление', value: cardTags.slice(0, -1).join(' · ') || 'Проект' },
     { label: 'Год', value: cardTags.at(-1) || '—' },
