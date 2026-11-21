@@ -8,9 +8,9 @@
     <title>Vasiliy Romanov — дизайнер цифровых продуктов</title>
     <script>if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion-pending');</script>
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-    <link rel="stylesheet" href="styles.css?v=game-modal-2026-11-16-2">
+    <link rel="stylesheet" href="styles.css?v=archive-modal-2026-11-21-22">
     <script src="https://cdn.jsdelivr.net/npm/lottie-web@5.13.0/build/player/lottie_light.min.js" defer></script>
-    <script src="script.js?v=game-modal-2026-11-16-2" defer></script>
+    <script src="script.js?v=archive-modal-2026-11-21-16" defer></script>
   
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
@@ -201,6 +201,21 @@
 
     <dialog class="showreel-dialog" data-showreel-dialog aria-label="Полный шоурил"><button class="showreel-dialog__close" type="button" data-showreel-close aria-label="Закрыть шоурил">×</button><video class="showreel-dialog__video" controls playsinline preload="none" aria-label="Полная версия шоурила Василия Романова"><source src="assets/video/showreel.mp4" type="video/mp4"><source src="assets/video/showreel.webm" type="video/webm"></video></dialog>
     <dialog class="game-dialog" data-game-dialog aria-label="Игра «Поймай оффер»"><button class="showreel-dialog__close" type="button" data-game-close aria-label="Закрыть игру"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.5"/></svg></button><iframe class="game-dialog__frame" data-game-frame title="Игра «Поймай оффер»" allow="fullscreen; autoplay" loading="lazy"></iframe></dialog>
+    <dialog class="archive-dialog" data-archive-dialog aria-labelledby="archive-dialog-title">
+      <article class="archive-modal">
+        <button class="archive-modal__close" type="button" data-archive-close aria-label="Закрыть описание проекта"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"/></svg></button>
+        <div class="archive-modal__visual"><img data-archive-dialog-image alt="" decoding="async"></div>
+        <div class="archive-modal__body">
+          <header class="archive-modal__header">
+            <div class="archive-modal__project"><span class="archive-modal__logo-slot" data-archive-dialog-logo></span><h2 id="archive-dialog-title" data-archive-dialog-title></h2></div>
+            <p data-archive-dialog-summary></p>
+          </header>
+          <div class="archive-modal__actions" data-archive-dialog-actions></div>
+          <div class="archive-modal__facts" data-archive-dialog-facts></div>
+          <section class="archive-modal__contribution" data-archive-dialog-contribution hidden><h3>Что я сделал</h3><ol data-archive-dialog-list></ol></section>
+        </div>
+      </article>
+    </dialog>
     <nav class="float-nav" aria-label="Быстрая навигация"><a class="is-active" href="#projects" aria-current="location"><span>Портфолио</span></a><a href="#showreel"><span>Шоурил</span></a><a class="float-nav__approach" href="#approach"><span>Как работаю</span></a><a href="#archive"><span class="float-nav__desktop-label">Архив работ</span><span class="float-nav__mobile-label">Архив</span></a><a href="#experience"><span class="float-nav__desktop-label">Опыт работы</span><span class="float-nav__mobile-label">Резюме</span></a><a class="float-nav__concepts" href="#concepts"><span>Концепты</span></a></nav>
   </body>
 </html>

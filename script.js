@@ -131,15 +131,15 @@ if ('IntersectionObserver' in window && !prefersReducedMotion.matches) {
   revealWords(document.querySelector('.portfolio__heading h2'), 0, 58, 'portfolio__word');
   revealWords(document.querySelector('.portfolio__copy>p'), 0, 58, 'portfolio__word');
   const approachMainHeading = document.querySelector('#approach .approach__main h2');
-  const approachMainWordStep = 32;
-  const approachMainStartDelay = 450;
-  const approachMainWordDuration = 620;
+  const approachMainWordStep = 18;
+  const approachMainStartDelay = 100;
+  const approachMainWordDuration = 420;
   const approachMainWordCount = revealWords(approachMainHeading, approachMainStartDelay, approachMainWordStep, 'approach__word');
   document.querySelectorAll('.approach__legacy h2').forEach((heading) => revealWords(heading, 80, 68, 'approach__word'));
   const approachHeadingEndDelay = approachMainStartDelay + Math.max(0, (approachMainWordCount || 1) - 1) * approachMainWordStep + approachMainWordDuration;
-  const approachCopyDelay = approachHeadingEndDelay;
-  const approachSpecializationsDelay = approachCopyDelay + 450;
-  const approachRatesDelay = approachSpecializationsDelay + 450;
+  const approachCopyDelay = approachHeadingEndDelay + 40;
+  const approachSpecializationsDelay = approachCopyDelay + 100;
+  const approachRatesDelay = approachSpecializationsDelay + 100;
   revealWords(document.querySelector('.tefs-outcome__copy h2'), 80, 58, 'portfolio__word');
   if (showreelSection) {
     showreelSection.dataset.scrollReveal = '';
@@ -688,7 +688,7 @@ const syncArchiveCopies = () => {
       const tileCopy = archiveTile.cloneNode(true);
       tileCopy.classList.add('archive__tile--copy');
       tileCopy.setAttribute('aria-hidden', 'true');
-      tileCopy.inert = true;
+      tileCopy.inert = false;
       tileCopy.style.left = `${column * archivePeriodX()}px`;
       tileCopy.style.top = `${row * archivePeriodY()}px`;
       archiveWorld.append(tileCopy);
@@ -772,6 +772,259 @@ if (archiveBoard && archiveWorld && archiveTile && desktopArchive.matches) {
 
   archiveBoard.addEventListener('pointerup', finishPanning);
   archiveBoard.addEventListener('pointercancel', finishPanning);
+}
+
+const archiveDialog = document.querySelector('[data-archive-dialog]');
+const archiveDialogImage = archiveDialog?.querySelector('[data-archive-dialog-image]');
+const archiveDialogTitle = archiveDialog?.querySelector('[data-archive-dialog-title]');
+const archiveDialogSummary = archiveDialog?.querySelector('[data-archive-dialog-summary]');
+const archiveDialogLogo = archiveDialog?.querySelector('[data-archive-dialog-logo]');
+const archiveDialogActions = archiveDialog?.querySelector('[data-archive-dialog-actions]');
+const archiveDialogFacts = archiveDialog?.querySelector('[data-archive-dialog-facts]');
+const archiveDialogContribution = archiveDialog?.querySelector('[data-archive-dialog-contribution]');
+const archiveDialogList = archiveDialog?.querySelector('[data-archive-dialog-list]');
+let archiveDialogTrigger = null;
+
+const showArchiveDialog = () => {
+  if (typeof archiveDialog.showModal === 'function') {
+    archiveDialog.showModal();
+    return;
+  }
+  archiveDialog.classList.add('is-fallback');
+  archiveDialog.setAttribute('open', '');
+  document.body.classList.add('archive-modal-open');
+  archiveDialog.querySelector('[data-archive-close]')?.focus();
+};
+
+const closeArchiveDialog = () => {
+  if (typeof archiveDialog.close === 'function' && !archiveDialog.classList.contains('is-fallback')) {
+    archiveDialog.close();
+    return;
+  }
+  archiveDialog.removeAttribute('open');
+  archiveDialog.classList.remove('is-fallback');
+  document.body.classList.remove('archive-modal-open');
+  archiveDialogTrigger?.focus();
+};
+
+const archiveProjectDetails = {
+  recap: {
+    image: 'assets/images/modal/recap.jpg',
+    summary: 'Сервис для подготовки к рабочим встречам и анализа коммуникации с помощью ИИ',
+    facts: [
+      { label: 'Моя роль', value: 'Автор проекта, UX/UI-дизайнер' },
+      { label: 'Сроки', value: 'Июль – сентябрь 2026' },
+      { label: 'Цель проекта', value: 'Разработать инструмент, который помогает дизайнерам готовиться к встречам, анализировать разговоры и улучшать навыки общения' },
+      { label: 'Формат работы', value: 'Самостоятельный проект с использованием ИИ-инструментов. Дизайн-лид дизайн-школы выступал внешним ревьюером' },
+    ],
+    contribution: [
+      'Разработал концепцию продукта и основные пользовательские сценарии.',
+      'Спроектировал интерфейс в формате интерактивной доски.',
+      'Создал визуальный стиль, компоненты и анимации.',
+      'С помощью ИИ-инструментов собрал работающий прототип и лендинг.',
+    ],
+    actions: [
+      { label: 'Смотреть кейс', href: '/recap/' },
+      { label: 'Смотреть сервис', href: 'https://fltdsgn.github.io/recap/', external: true },
+    ],
+  },
+  getmecar: {
+    image: 'assets/images/modal/getmecar.jpg',
+    summary: 'Сервис для поиска транспорта от автомобиля до яхты за рубежом',
+    facts: [
+      { label: 'Моя роль', value: 'UX/UI-дизайнер' },
+      { label: 'Сроки', value: 'Январь – май 2022' },
+      { label: 'Цель проекта', value: 'Обновить дизайн существующего сайта сервиса аренды транспорта и переработать личные кабинеты для двух типов пользователей' },
+      { label: 'Команда', value: 'UX/UI-дизайнер (я)\nЗаказчик\nКоманда разработки' },
+    ],
+    contribution: [
+      'Обновил визуальный стиль и интерфейсы существующего сайта.',
+      'Переработал личный кабинет арендатора.',
+      'Переработал личный кабинет владельца транспортного средства.',
+      'Спроектировал личный кабинет менеджера.',
+    ],
+    actions: [{ label: 'Перейти на сайт', href: 'https://getmecar.ru/', external: true }],
+  },
+  psb: {
+    image: 'assets/images/modal/psb.jpg',
+    summary: 'Разработка внутренних страниц и дизайн-системы для крупного банка',
+    facts: [
+      { label: 'Моя роль', value: 'UX/UI-дизайнер' },
+      { label: 'Сроки', value: 'с августа 2023 по май 2024' },
+      { label: 'Цель проекта', value: 'Поддерживать и развивать дизайн сайта ПСБ: обновлять существующие страницы, проектировать новые разделы и сохранять единый визуальный стиль.' },
+      { label: 'Команда', value: 'UX/UI-дизайнер (я)\nДизайн-лиды\nАрт-директор\nПроектные менеджеры' },
+    ],
+    contribution: [
+      'Поддерживал и развивал дизайн сайта банка: обновлял существующие страницы и проектировал новые разделы.',
+      'Работал с дизайн-системой, обеспечивая единообразие интерфейсов.',
+      'Проектировал интерфейсы мобильного приложения для нового банковского продукта.',
+      'Создавал лендинги и визуальные материалы для отдельных продуктов и внебанковских активностей.',
+    ],
+  },
+  lada: {
+    image: 'assets/images/modal/lada.jpg',
+    summary: 'Сайт для крупнейшего автопроизводителя',
+    facts: [
+      { label: 'Моя роль', value: 'UX/UI-дизайнер' },
+      { label: 'Сроки', value: 'с февраля по май 2021' },
+      { label: 'Цель проекта', value: 'Разработать новый сайт LADA на основе готовой визуальной концепции. Адаптировать дизайн для внутренних страниц и разделов сайта, сохранив единый стиль. Ключевым ограничением были сжатые сроки реализации проекта' },
+      { label: 'Команда', value: 'Дизайн-лид (я)\nUX/UI-дизайнер\nРазработка\nПроектные менеджеры' },
+    ],
+    contribution: [
+      'С нуля разработал дизайн внутренних страниц нового сайта LADA.',
+      'Спроектировал интерфейсы автомобильных калькуляторов, конфигураторов и каталога новых автомобилей.',
+      'Переработал ранее согласованные решения после пересмотра дизайна проекта.',
+      'Адаптировал обновлённые интерфейсы к общей визуальной концепции сайта в условиях сжатых сроков.',
+    ],
+    actions: [{ label: 'Перейти на сайт', href: 'https://www.lada.ru/', external: true }],
+  },
+  vodohod: {
+    image: 'assets/images/modal/vodohod.jpg',
+    summary: 'Внутренний цифровой продукт для круизного оператора «Водоход»',
+    facts: [
+      { label: 'Моя роль', value: 'UX/UI-дизайнер' },
+      { label: 'Сроки', value: 'Декабрь 2023' },
+      { label: 'Цель проекта', value: 'Переработать процесс покупки речных круизов: от выбора маршрута и каюты до оформления билета. Учесть два сценария работы с единой системой — самостоятельную покупку клиентом на сайте и оформление заказа кассиром' },
+      { label: 'Команда', value: 'UX/UI-дизайнер (я)\nПродакт-менеджеры со стороны клиента' },
+    ],
+    contribution: [
+      'Дорабатывал существующую систему покупки круизов, проектировал новые экраны и перерабатывал пользовательский путь от выбора круиза до оформления заказа.',
+      'Самостоятельно отвечал за дизайн проекта, обсуждал и согласовывал решения напрямую с продакт-менеджерами заказчика.',
+    ],
+  },
+  promomed: {
+    image: 'assets/images/modal/promomed.jpg',
+    summary: 'Корпоративный сайт биофармацевтической компании',
+    facts: [
+      { label: 'Моя роль', value: 'UX/UI-дизайнер' },
+      { label: 'Сроки', value: 'Сентябрь 2024 – февраль 2025' },
+      { label: 'Цель проекта', value: 'Разработать дизайн корпоративного сайта на основе утверждаемой визуальной концепции и сформировать единую дизайн-систему. Особенностью проекта был длительный процесс согласования дизайн-решений с заказчиком.' },
+      { label: 'Команда', value: 'UX/UI-дизайнер (я)\nДизайн-лиды\nАрт-директор\nПроектные менеджеры' },
+    ],
+    contribution: [
+      'Разрабатывал визуальную концепцию главной страницы и дорабатывал её по результатам согласований.',
+      'Проектировал внутренние страницы сайта, развивая выбранный визуальный стиль.',
+      'Собрал дизайн-систему для обеспечения единообразия интерфейсов.',
+    ],
+  },
+  flru: {
+    directLink: 'https://www.behance.net/gallery/186383355/Freelance-Website-redesign',
+  },
+  hireme: {
+    directLink: 'https://www.behance.net/gallery/228205843/Hireme-Mobile-app-concept',
+  },
+};
+
+const escapeArchiveText = (value) => String(value).replace(/[&<>"']/g, (character) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+}[character]));
+
+function openArchiveProject(card) {
+  if (!card) return;
+  const project = archiveProjectDetails[card.dataset.archiveCard];
+  if (!project) return;
+  const title = card.querySelector('.archive-card__caption b')?.textContent.trim() || 'Проект';
+  if (project.directLink) {
+    window.open(project.directLink, '_blank', 'noopener,noreferrer');
+    return;
+  }
+  if (!archiveDialog || !archiveDialogImage) return;
+  archiveDialogTrigger = card;
+  const summary = project.summary || card.querySelector('.archive-card__caption small')?.textContent.trim() || '';
+  const cardImage = card.querySelector('.archive-card__image img');
+  const cardLogo = card.querySelector('.archive-card__logo, .archive-card__logo--text');
+  const cardTags = [...card.querySelectorAll('.archive-card__image > span')].map((tag) => tag.textContent.trim()).filter(Boolean);
+  archiveDialogTitle.textContent = title;
+  archiveDialogSummary.textContent = summary;
+  archiveDialogImage.src = project.image || cardImage?.getAttribute('src') || '';
+  archiveDialogImage.alt = `Проект ${title}`;
+  archiveDialogImage.loading = 'eager';
+  archiveDialogLogo.replaceChildren();
+  if (cardLogo) {
+    const logo = cardLogo.cloneNode(true);
+    logo.classList.add('archive-modal__logo');
+    logo.setAttribute('aria-hidden', 'true');
+    if (logo instanceof HTMLImageElement) {
+      logo.alt = '';
+      logo.loading = 'eager';
+    }
+    archiveDialogLogo.append(logo);
+  }
+  const actions = project.actions || [];
+  const hasSingleAction = actions.length === 1;
+  archiveDialogActions.hidden = actions.length === 0;
+  archiveDialogActions.innerHTML = actions.map((action) => `<a class="archive-modal__action${action.external && !hasSingleAction ? ' archive-modal__action--secondary' : ''}" href="${escapeArchiveText(action.href)}"${action.external ? ' target="_blank" rel="noopener noreferrer"' : ''}><span class="archive-modal__action-label">${escapeArchiveText(action.label)}</span>${action.external ? '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 15 15 5M7 5h8v8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>' : ''}</a>`).join('');
+  const facts = project.facts || [
+    { label: 'Направление', value: cardTags.slice(0, -1).join(' · ') || 'Проект' },
+    { label: 'Год', value: cardTags.at(-1) || '—' },
+  ];
+  archiveDialogFacts.innerHTML = facts.map((fact) => `<div class="archive-modal__fact"><h3>${escapeArchiveText(fact.label)}</h3><p>${escapeArchiveText(fact.value).replace(/\n/g, '<br>')}</p></div>`).join('');
+  const contribution = project.contribution || [];
+  archiveDialogContribution.hidden = contribution.length === 0;
+  archiveDialogList.innerHTML = contribution.map((item) => `<li>${escapeArchiveText(item)}</li>`).join('');
+  showArchiveDialog();
+}
+
+if (archiveDialog && archiveWorld) {
+  archiveWorld.querySelectorAll('[data-archive-card]').forEach((card) => {
+    const project = archiveProjectDetails[card.dataset.archiveCard];
+    if (!project) return;
+    card.classList.add('is-interactive');
+    if (card.closest('.archive__tile--copy')) return;
+    const title = card.querySelector('.archive-card__caption b')?.textContent.trim() || 'Проект';
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    if (project.directLink) {
+      card.removeAttribute('aria-haspopup');
+      card.setAttribute('aria-label', `Открыть проект ${title} на Behance в новой вкладке`);
+    } else {
+      card.setAttribute('aria-haspopup', 'dialog');
+      card.setAttribute('aria-label', `Открыть проект: ${title}`);
+    }
+  });
+
+  archiveWorld.addEventListener('click', (event) => {
+    const card = event.target.closest('[data-archive-card]');
+    if (!card || desktopArchive.matches) return;
+    event.preventDefault();
+    openArchiveProject(card);
+  });
+
+  archiveWorld.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    const card = event.target.closest('[data-archive-card]');
+    if (!card || !archiveProjectDetails[card.dataset.archiveCard]) return;
+    event.preventDefault();
+    openArchiveProject(card);
+  });
+
+  let archiveModalPress = null;
+  archiveBoard?.addEventListener('pointerdown', (event) => {
+    if (!desktopArchive.matches || event.button !== 0) return;
+    const card = event.target.closest('[data-archive-card]');
+    archiveModalPress = card && archiveProjectDetails[card.dataset.archiveCard]
+      ? { card, pointerId: event.pointerId, x: event.clientX, y: event.clientY, moved: false }
+      : null;
+  }, true);
+  archiveBoard?.addEventListener('pointermove', (event) => {
+    if (!archiveModalPress || event.pointerId !== archiveModalPress.pointerId) return;
+    if (Math.hypot(event.clientX - archiveModalPress.x, event.clientY - archiveModalPress.y) > 8) archiveModalPress.moved = true;
+  }, true);
+  archiveBoard?.addEventListener('pointerup', (event) => {
+    if (!archiveModalPress || event.pointerId !== archiveModalPress.pointerId) return;
+    const { card, moved } = archiveModalPress;
+    archiveModalPress = null;
+    if (!moved) openArchiveProject(card);
+  }, true);
+  archiveBoard?.addEventListener('pointercancel', () => { archiveModalPress = null; }, true);
+
+  archiveDialog.querySelector('[data-archive-close]')?.addEventListener('click', closeArchiveDialog);
+  archiveDialog.addEventListener('click', (event) => {
+    if (event.target === archiveDialog) closeArchiveDialog();
+  });
+  archiveDialog.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && archiveDialog.classList.contains('is-fallback')) closeArchiveDialog();
+  });
 }
 
 const footer = document.querySelector('.footer');
