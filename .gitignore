@@ -1,23 +1,8 @@
-# Large editable originals stay on the working computer; the site uses WebM/WebP.
+# Large source videos stay on the working computer; selected site videos are explicitly allowed below.
 assets/**/*.mp4
 !assets/video/showreel.mp4
 !assets/video/showreel-teaser.mp4
 !assets/video/Media _ Product matching demo.mp4
 !assets/video/Video _ Challenges · Scroll animation · 10s.mp4
-assets/**/*.jpg
-!assets/images/B2B FoodTech.jpg
-!assets/images/B2B FoodTec Mob.jpg
-!assets/images/Nefis.jpg
-!assets/images/Tuktuk.jpg
-assets/**/*.jpeg
-assets/**/*.png
-!assets/images/Project outcome.jpg
-!assets/images/Project outcome bg_mobile.jpg
-!assets/images/Pricing interface showcase.jpg
-!assets/images/Assortment interface showcase.jpg
-!assets/images/Suppliers list.jpg
-!assets/images/Supplier logistics.jpg
-!assets/images/Supplier logistics-1.jpg
-!assets/images/Multiple cities.jpg
 AGENTS.md
 AGENTS.md

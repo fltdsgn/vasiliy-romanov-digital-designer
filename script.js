@@ -809,7 +809,7 @@ const closeArchiveDialog = () => {
 
 const archiveProjectDetails = {
   recap: {
-    image: 'assets/images/modal/recap.jpg',
+    image: 'assets/images/Modal/recap.jpg',
     summary: 'Сервис для подготовки к рабочим встречам и анализа коммуникации с помощью ИИ',
     facts: [
       { label: 'Моя роль', value: 'Автор проекта, UX/UI-дизайнер' },
@@ -829,7 +829,7 @@ const archiveProjectDetails = {
     ],
   },
   getmecar: {
-    image: 'assets/images/modal/getmecar.jpg',
+    image: 'assets/images/Modal/getmecar.jpg',
     summary: 'Сервис для поиска транспорта от автомобиля до яхты за рубежом',
     facts: [
       { label: 'Моя роль', value: 'UX/UI-дизайнер' },
@@ -846,7 +846,7 @@ const archiveProjectDetails = {
     actions: [{ label: 'Перейти на сайт', href: 'https://getmecar.ru/', external: true }],
   },
   psb: {
-    image: 'assets/images/modal/psb.jpg',
+    image: 'assets/images/Modal/psb.jpg',
     summary: 'Разработка внутренних страниц и дизайн-системы для крупного банка',
     facts: [
       { label: 'Моя роль', value: 'UX/UI-дизайнер' },
@@ -862,7 +862,7 @@ const archiveProjectDetails = {
     ],
   },
   lada: {
-    image: 'assets/images/modal/lada.jpg',
+    image: 'assets/images/Modal/lada.jpg',
     summary: 'Сайт для крупнейшего автопроизводителя',
     facts: [
       { label: 'Моя роль', value: 'UX/UI-дизайнер' },
@@ -879,7 +879,7 @@ const archiveProjectDetails = {
     actions: [{ label: 'Перейти на сайт', href: 'https://www.lada.ru/', external: true }],
   },
   vodohod: {
-    image: 'assets/images/modal/vodohod.jpg',
+    image: 'assets/images/Modal/vodohod.jpg',
     summary: 'Внутренний цифровой продукт для круизного оператора «Водоход»',
     facts: [
       { label: 'Моя роль', value: 'UX/UI-дизайнер' },
@@ -893,7 +893,7 @@ const archiveProjectDetails = {
     ],
   },
   promomed: {
-    image: 'assets/images/modal/promomed.jpg',
+    image: 'assets/images/Modal/promomed.jpg',
     summary: 'Корпоративный сайт биофармацевтической компании',
     facts: [
       { label: 'Моя роль', value: 'UX/UI-дизайнер' },
