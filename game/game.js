@@ -1372,7 +1372,7 @@
     if(player){const dx=camera+mouse.aimX-(player.x+player.w/2),aimY=mouse.aimY+(room==='screening'?cameraY:0),dy=aimY-(player.y+player.h/2);player.aimAngle=Math.atan2(dy,dx);player.face=dx<0?-1:1;}
   }
   function shoot(){
-    if(mode!=='play'||player.shootCooldown>0)return;player.shootCooldown=.23;tone(680,.035,'square');recordTutorial('shoot');
+    if(mode!=='play'||portfolioFinale||player.shootCooldown>0)return;player.shootCooldown=.23;tone(680,.035,'square');recordTutorial('shoot');
     const runningPose=!player.crouching&&(!player.ground||Math.abs(player.vx)>3),drawW=runningPose?34:27,drawH=player.crouching?25:36;
     const drawX=player.x+(player.w-drawW)/2,drawY=player.y+player.h+(player.ground?5:0)-drawH;
     const targetX=mouse.aiming?camera+mouse.aimX:player.x+player.w/2+(player.face||1)*120;
@@ -1870,7 +1870,7 @@
 
   // Input stays attached to the game surface.
   canvas.addEventListener('mousedown',event=>{
-    event.preventDefault();canvas.focus();if(event.button===0){updateAimFromPointer(event);mouse.left=true;if(mode==='play'&&!player.shootCooldown)shoot();}
+    event.preventDefault();canvas.focus();if(event.button===0){updateAimFromPointer(event);mouse.left=true;if(mode==='play'&&!portfolioFinale&&!player.shootCooldown)shoot();}
   });
   canvas.addEventListener('mousemove',event=>{
     updateAimFromPointer(event);
