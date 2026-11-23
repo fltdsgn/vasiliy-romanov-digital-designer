@@ -34,8 +34,10 @@ button { color: inherit; cursor: pointer; font: inherit; }
 .game-wrap { position: relative; overflow: hidden; aspect-ratio: 3 / 2; border: 1px solid #484f5b; background: #11141c; box-shadow: 0 0 0 4px #1a1d25, 0 22px 72px #07080d99; }
 canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; cursor: crosshair; }
 .scanlines { position: absolute; inset: 0; pointer-events: none; opacity: .12; background: repeating-linear-gradient(0deg, transparent 0, transparent 3px, #05060b 4px); mix-blend-mode: multiply; }
-.overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-.card { width: min(980px, 92%); max-width: 92%; padding: clamp(36px, 6vw, 82px); border: 1px solid #4a5260; background: #171a25f5; box-shadow: 5px 5px 0 #080910aa; text-align: center; pointer-events: auto; }
+.overlay { position: absolute; z-index: 4; inset: 0; display: flex; align-items: center; justify-content: center; padding: 22px; background: radial-gradient(ellipse at center, transparent 32%, rgba(3,7,12,.24) 100%); pointer-events: none; }
+.card { position: relative; width: min(760px, 100%); max-width: 100%; max-height: 100%; overflow: auto; padding: clamp(30px, 4.2vw, 56px); border: 1px solid rgba(137,154,165,.62); background: linear-gradient(145deg, rgba(23,30,41,.95), rgba(13,20,30,.92)); box-shadow: 0 18px 54px rgba(2,6,12,.62), inset 0 1px rgba(245,241,227,.07); text-align: center; pointer-events: auto; backdrop-filter: blur(3px); }
+.card::before { position: absolute; inset: 8px; border: 1px solid rgba(117,200,195,.19); content: ""; pointer-events: none; }
+.card::after { position: absolute; top: 20px; bottom: 20px; left: 0; width: 4px; background: linear-gradient(180deg, var(--pink), var(--blue) 55%, var(--lime)); content: ""; }
 .eyebrow { margin: 0 0 20px; color: var(--lime); font-size: clamp(14px, 1.8vw, 18px); letter-spacing: .2em; }
 .eyebrow.hr-director-label { font-size: clamp(7px, .9vw, 9px); }
 .card h1, .card h2 { margin: 0; color: var(--white); font-family: "Segoe UI", Arial, sans-serif; font-weight: 900; line-height: 1; }
@@ -47,14 +49,6 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 .primary:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 #738052; }
 .secondary { background: #303442; color: #fff; box-shadow: 3px 3px 0 #0b0c12; }
 .actions { display: flex; justify-content: center; gap: 12px; margin-top: 16px; }
-.difficulty-picker { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 24px 0; }
-.difficulty-choice { min-height: 96px; padding: 12px 14px; border: 1px solid #414753; background: #202430; color: #c0c4c9; font-size: 16px; }
-.difficulty-name, .difficulty-description { display: block; }
-.difficulty-name { margin-bottom: 8px; font-weight: 700; }
-.difficulty-description { color: #aeb4bf; font-size: 14px; line-height: 1.35; }
-.difficulty-choice.selected { border-color: var(--lime); background: #313a29; color: var(--lime); }
-.difficulty-choice.selected .difficulty-description { color: #d0daa9; }
-.difficulty-choice:hover { border-color: var(--blue); }
 .stage-grid { display: grid; grid-template-columns: repeat(2, minmax(150px, 1fr)); gap: 10px; margin: 18px 0 12px; }
 .stage-grid button { min-height: 52px; }
 .hud-bottom { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 24px; color: #c0c4ca; font-size: 15px; }
@@ -73,13 +67,12 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
   .hud-bottom { height: auto; flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px 0; font-size: 13px; }
   .controls { gap: 10px 14px; }
   .control { gap: 6px; }
-  .difficulty-picker { gap: 6px; }
-  .difficulty-choice { min-height: 110px; padding: 10px 7px; font-size: 14px; }
-  .difficulty-description { font-size: 12px; }
   .key { padding: 6px 8px; font-size: 12px; }
   .stage-note { font-size: 13px; }
   .page-caption { flex-direction: column; gap: 7px; font-size: 12px; }
-  .card { width: 92%; max-width: 92%; padding: clamp(24px, 7vw, 44px); }
+  .overlay { padding: 12px; }
+  .card { width: 100%; max-width: 100%; padding: clamp(26px, 7vw, 40px); }
+  .card h1 { font-size: clamp(32px, 9vw, 48px); white-space: normal; }
   .card h2 { font-size: clamp(34px, 8vw, 48px); }
   .card p { margin: 18px 0 22px; font-size: clamp(16px, 4vw, 20px); }
   .eyebrow { margin-bottom: 14px; font-size: 13px; }
